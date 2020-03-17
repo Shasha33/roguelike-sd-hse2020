@@ -1,0 +1,25 @@
+package event
+
+import data.Context
+
+class EventBus {
+    private val events = mutableListOf<Event>()
+
+    fun addEvent(event: Event) {
+        events.add(event)
+    }
+
+    fun removeEvent(event: Event) {
+        events.remove(event)
+    }
+
+    fun callAll(context: Context): EventResult {
+        for (event in events) {
+            val result = event.apply(context)
+            if (result.exitCode != ExitCode.CONTINUE) {
+                return result
+            }
+        }
+        return EventResult(ExitCode.CONTINUE)
+    }
+}
