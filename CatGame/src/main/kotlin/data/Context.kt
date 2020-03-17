@@ -1,6 +1,5 @@
 package data
 
-import com.sun.xml.internal.bind.v2.schemagen.episode.Klass
 import kotlin.reflect.KClass
 
 class Context {
@@ -12,14 +11,40 @@ class Context {
         objects.getOrPut(to, { mutableListOf()}).add(currentObject)
     }
 
-    fun getObjectsAt(x: Int, y: Int): List<GameObject>? {
-        return objects[Point(x, y)]
+    fun removeObject(type: KClass<out GameObject>, from: Point) {
+        objects[from] ?: return
+        objects[from] = objects[from]!!.filter { !type.isInstance(it) }.toMutableList()
     }
 
-    fun getPlayerPoint(): Point {
-        objects.map { (p: Point, g: List<GameObject>) ->
-            if (g.)
-        }
+    private fun getObjectsAt(p: Point): List<GameObject>? {
+        return objects[p]
+    }
+
+    fun getPlayerPoint(): Point? {
+        return objects.mapNotNull { (p: Point, g: List<GameObject>) ->
+            if (g.any {it is Player}) {
+                p
+            } else {
+                null
+            }
+        }.singleOrNull()
+    }
+
+    private fun getTypeObjectAt(type: KClass<out GameObject>, p: Point): GameObject? {
+        return getObjectsAt(p)?.singleOrNull { type.isInstance(type) }
+    }
+
+    fun getPlayer(): Player? {
+        val playerPoint = getPlayerPoint() ?: return null
+        return getTypeObjectAt(Player::class, playerPoint) as? Player
+    }
+
+    fun containsClass(type: KClass<out GameObject>, p: Point): Boolean {
+        return objects.getOrDefault(p, emptyList<GameObject>()).any { type.isInstance(it) }
+    }
+
+    fun isWall(p: Point): Boolean {
+        return containsClass(Wall::class, p)
     }
 }
 

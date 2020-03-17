@@ -1,7 +1,11 @@
 package data
 
 class Player : Unit {
-    var cnt = 0
+    private var cnt = 0
+
+    fun addClew() {
+        cnt++
+    }
 }
 
 class DoorUp : Furniture
