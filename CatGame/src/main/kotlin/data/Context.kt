@@ -11,6 +11,10 @@ class Context {
         objects.getOrPut(to, { mutableListOf()}).add(currentObject)
     }
 
+    fun addObject(gameObject: GameObject, p: Point) {
+        objects.getOrPut(p) { mutableListOf() }.add(gameObject)
+    }
+
     fun removeObject(type: KClass<out GameObject>, from: Point) {
         objects[from] ?: return
         objects[from] = objects[from]!!.filter { !type.isInstance(it) }.toMutableList()
@@ -48,4 +52,4 @@ class Context {
     }
 }
 
-data class Point(private val x: Int, private val y: Int)
+data class Point(val x: Int, val y: Int)
