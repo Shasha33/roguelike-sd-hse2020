@@ -12,17 +12,20 @@ sourceCompatibility = 1.8
 
 repositories {
     mavenCentral()
+    maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
 }
 mainClassName = 'MyApp'
 
 javafx {
-    version = "13"
+    version = "12"
     modules = [ 'javafx.controls', 'javafx.fxml', 'javafx.swing', 'javafx.media' ]
 }
 
+
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
-    compile 'no.tornado:tornadofx:1.7.20'
+//    compile 'no.tornado:tornadofx:1.7.20'
+    compile 'no.tornado:tornadofx:2.0.0-SNAPSHOT'
     testCompile group: 'junit', name: 'junit', version: '4.12'
 }
 
