@@ -3,6 +3,7 @@ package views
 import controller.MainController
 import data.*
 import javafx.collections.FXCollections.observableArrayList
+import javafx.scene.input.KeyEvent
 import javafx.scene.layout.Background
 import javafx.scene.paint.Color
 import javafx.scene.text.TextFlow
@@ -13,32 +14,37 @@ class LevelView : View() {
 
     val controller: MainController by inject()
 
-    override val root = borderpane{
+    override val root = vbox {
         style {
             backgroundColor += Color.BLACK
         }
+        keyboard {
+            addEventHandler(KeyEvent.KEY_PRESSED) {
+                println(it.code)
+            }
+        }
     }
+
+
 
     fun drawContext(ctx: Map<Point, List<GameObject>>) {
         with(root) {
-            center {
-                gridpane {
-                    for ((point, list) in ctx.entries) {
-                        list.firstOrNull()?.let {
-                            val sprite = when(it) {
-                                is Wall -> "█"
-                                is Player -> "\uD83D\uDC31"
-                                is DoorUp -> "\uD83D\uDEAA"
-                                is DoorDown -> "\uD83D\uDEAA"
-                                else -> ""
-                            }
-                            text(sprite) {
-                                gridpaneConstraints {
-                                    columnRowIndex(point.x,point.y)
-                                }
-                            }
-
+            gridpane {
+                for ((point, list) in ctx.entries) {
+                    list.firstOrNull()?.let {
+                        val sprite = when(it) {
+                            is Wall -> "█"
+                            is Player -> "\uD83D\uDC31"
+                            is DoorUp -> "\uD83D\uDEAA"
+                            is DoorDown -> "\uD83D\uDEAA"
+                            else -> ""
                         }
+                        text(sprite) {
+                            gridpaneConstraints {
+                                columnRowIndex(point.x,point.y)
+                            }
+                        }
+
                     }
                 }
             }

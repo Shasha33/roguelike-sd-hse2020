@@ -41,8 +41,8 @@ class MainController: Controller() {
 //    val name = bind(Person::nameProperty)
 //    val title = bind(Person::titleProperty)
 //}
-
+//
 //class ContextProp(ctx: ObservableMap<Point, GameObject>?) {
-//    val prop = SimpleMapProperty<Point, GameObject>(this, "map", ctx)
-//    val ctx by prop
+//    val prop = SimpleMapProperty<Point, GameObject>(this, "ctx", ctx)
+//
 //}
