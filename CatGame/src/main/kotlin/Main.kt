@@ -2,13 +2,14 @@ import javafx.stage.Stage
 import tornadofx.*
 import tornadofx.View
 import views.LevelView
+import views.MenuView
 
 
-class MyApp: App(LevelView::class) {
+class MyApp: App(MenuView::class) {
     override fun start(stage: Stage) {
         super.start(stage)
-        stage.width = 600.0
-        stage.height = 600.0
+//        stage.width = 600.0
+//        stage.height = 600.0
     }
 }
 

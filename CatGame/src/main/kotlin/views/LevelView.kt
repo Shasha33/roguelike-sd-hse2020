@@ -1,29 +1,19 @@
 package views
 
+import controller.MainController
 import javafx.collections.FXCollections.observableArrayList
+import javafx.scene.text.TextFlow
 import tornadofx.*
+import java.awt.TextField
 
 class LevelView : View() {
-    private val data = listOf(listOf("1", "2", "3"), listOf("1", "2", "3"), listOf("1", "2", "3"))
-//    override val root = tableview(data) {  }
 
-//    private val defaultStyle = Gr
-    override val root = gridpane {
-        for (r in data) {
-            row {
+    val controller: MainController by inject()
 
-                for (c in r) {
-                    text(c) {
-                        useMaxSize = true
-                    }
-                }
-            }
-        }
-        for (i in data.indices) {
-            constraintsForRow(i).percentHeight = 100.0 / data.size
-        }
-        for (i in data[0].indices) {
-            constraintsForColumn(i).percentWidth = 100.0 / data[0].size
+    override val root = vbox {
+        useMaxSize = true
+        textflow {
+            text("lol")
         }
     }
 }
