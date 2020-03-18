@@ -1,8 +1,14 @@
 package controller
 
 import data.Context
+import data.GameObject
+import data.Point
+import javafx.beans.property.MapProperty
+import javafx.beans.property.SimpleMapProperty
+import javafx.collections.ObservableMap
 import logic.GameManager
 import tornadofx.Controller
+import tornadofx.ItemViewModel
 import java.io.File
 import java.util.concurrent.ConcurrentLinkedQueue
 import kotlin.random.Random
@@ -30,3 +36,13 @@ class MainController: Controller() {
         }
     }
 }
+
+//class ContextModel(ctx: Context) : ItemViewModel<Context>(ctx) {
+//    val name = bind(Person::nameProperty)
+//    val title = bind(Person::titleProperty)
+//}
+
+//class ContextProp(ctx: ObservableMap<Point, GameObject>?) {
+//    val prop = SimpleMapProperty<Point, GameObject>(this, "map", ctx)
+//    val ctx by prop
+//}
