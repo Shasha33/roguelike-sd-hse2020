@@ -28,6 +28,9 @@ class MainController : Controller() {
     fun runGame() {
         runAsync {
             val lvl = gameManager.createLevel(Random.nextInt())
+            lvl.addReaction {
+                //TODO call level update
+            }
             val loop = gameManager.runLevel(lvl, listOf(PlayerEvent(channel)))
         }
     }

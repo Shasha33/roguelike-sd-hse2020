@@ -1,23 +1,36 @@
 package data
 
+import kotlin.Unit
+import kotlin.properties.Delegates
 import kotlin.reflect.KClass
 
 class Context {
     private val objects = mutableMapOf<Point, MutableList<GameObject>>()
+    private var runnableReaction : () -> Unit = {}
+    private var stepsCount : Int by Delegates.observable(0) { _, _, _ ->
+        runnableReaction.invoke()
+    }
+
+    fun addReaction(reaction: () -> Unit) {
+        runnableReaction = reaction
+    }
 
     fun moveObject(type: KClass<out GameObject>, from: Point, to: Point) {
         val currentObject = (objects[from] ?: return).singleOrNull { type.isInstance(it) } ?: return
         objects[from]?.remove(currentObject)
         objects.getOrPut(to, { mutableListOf()}).add(currentObject)
+        stepsCount++
     }
 
     fun addObject(gameObject: GameObject, p: Point) {
         objects.getOrPut(p) { mutableListOf() }.add(gameObject)
+        stepsCount++
     }
 
     fun removeObject(type: KClass<out GameObject>, from: Point) {
         objects[from] ?: return
         objects[from] = objects[from]!!.filter { !type.isInstance(it) }.toMutableList()
+        stepsCount++
     }
 
     private fun getObjectsAt(p: Point): List<GameObject>? {
