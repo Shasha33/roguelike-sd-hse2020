@@ -32,7 +32,12 @@ class LevelView : View() {
                                 is DoorDown -> "\uD83D\uDEAA"
                                 else -> ""
                             }
-                            text(sprite)
+                            text(sprite) {
+                                gridpaneConstraints {
+                                    columnRowIndex(point.x,point.y)
+                                }
+                            }
+
                         }
                     }
                 }
