@@ -4,6 +4,7 @@ import data.Context
 import event.PlayerEvent
 import logic.GameManager
 import tornadofx.Controller
+import views.LevelView
 import java.io.File
 import java.util.concurrent.ConcurrentLinkedQueue
 import kotlin.random.Random
@@ -30,6 +31,7 @@ class MainController : Controller() {
             val lvl = gameManager.createLevel(Random.nextInt())
             lvl.addReaction {
                 //TODO call level update
+                find<LevelView>().drawContext(lvl.getMap())
             }
             val loop = gameManager.runLevel(lvl, listOf(PlayerEvent(channel)))
         }

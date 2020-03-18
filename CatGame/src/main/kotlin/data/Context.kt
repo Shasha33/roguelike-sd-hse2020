@@ -11,8 +11,13 @@ class Context {
         runnableReaction.invoke()
     }
 
+    fun getMap() : Map<Point, List<GameObject>> {
+        return objects
+    }
+
     fun addReaction(reaction: () -> Unit) {
         runnableReaction = reaction
+        stepsCount++
     }
 
     fun moveObject(type: KClass<out GameObject>, from: Point, to: Point) {
