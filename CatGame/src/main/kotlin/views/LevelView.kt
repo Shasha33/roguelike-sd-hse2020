@@ -16,13 +16,17 @@ class LevelView : View() {
     val controller: MainController by inject()
     private lateinit var gameRoot: GridPane
 
+    init {
+        controller.runGame()
+    }
     override val root = vbox {
         style {
             backgroundColor += Color.BLACK
         }
         keyboard {
             addEventHandler(KeyEvent.KEY_PRESSED) {
-                println(it.code)
+                controller.addToActionQueue(it.code.name)
+//                println(it.code)
             }
         }
         gridpane {
