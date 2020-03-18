@@ -1,16 +1,16 @@
 package logic
 
 import data.Context
-import event.EventBus
-import event.EventResult
-import event.ExitCode
-import event.WorldSimulation
+import event.*
 
-class GameLoop(private val context: Context) {
+class GameLoop(private val context: Context, private val eventList : List<Event>) {
     fun run() {
         val worldSimulation = WorldSimulation()
         val eventBus = EventBus()
         worldSimulation.addEvents(eventBus)
+        for (event in eventList) {
+            eventBus.addEvent(event)
+        }
 
         var result = EventResult(ExitCode.CONTINUE)
         while (result.exitCode == ExitCode.CONTINUE) {
