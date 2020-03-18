@@ -1,8 +1,6 @@
 package logic
 
-import data.Context
-import data.Point
-import data.Wall
+import data.*
 import java.lang.Integer.min
 import kotlin.random.Random
 
@@ -80,12 +78,72 @@ class LevelProducer {
                 }
             }
         }
+
         createDoors(context)
+        createPlayer(context)
+        createClews(context)
         return context
     }
 
     private fun createDoors(context: Context) {
+        val emptyPoints = mutableListOf<Point>()
+        for (i in (1 until levelHeight)) {
+            for (j in (1 until levelWidth)) {
+                if (field[i][j] == 1 && validDoorPoint(i, j)) {
+                    emptyPoints.add(Point(i, j))
+                }
+            }
+        }
+        val randomUpIndex = random.nextInt(emptyPoints.size)
+        context.addObject(DoorUp(), emptyPoints[randomUpIndex])
+        field[emptyPoints[randomUpIndex].x][emptyPoints[randomUpIndex].y] = 0
+        emptyPoints.removeAt(randomUpIndex)
 
+        val randomDownIndex = random.nextInt(emptyPoints.size)
+        context.addObject(DoorDown(), emptyPoints[randomDownIndex])
+        field[emptyPoints[randomDownIndex].x][emptyPoints[randomDownIndex].y] = 0
+    }
+
+    private fun createPlayer(context: Context) {
+        val emptyPoints = mutableListOf<Point>()
+        for (i in (1 until levelHeight)) {
+            for (j in (1 until levelWidth)) {
+                if (field[i][j] == 1) {
+                    emptyPoints.add(Point(i, j))
+                }
+            }
+        }
+        val randomUpIndex = random.nextInt(emptyPoints.size)
+        val point = emptyPoints[randomUpIndex]
+        context.addObject(Player(), point)
+        field[point.x][point.y] = 0
+    }
+
+    private fun createClews(context: Context) {
+        val emptyPoints = mutableListOf<Point>()
+        for (i in (1 until levelHeight)) {
+            for (j in (1 until levelWidth)) {
+                if (field[i][j] == 1) {
+                    emptyPoints.add(Point(i, j))
+                }
+            }
+        }
+        val randomCount = random.nextInt(emptyPoints.size / 2)
+        repeat(randomCount) {
+            val randomIndex = random.nextInt(emptyPoints.size)
+            context.addObject(Clew(), emptyPoints[randomIndex])
+            emptyPoints.removeAt(randomIndex)
+        }
+    }
+
+    private fun validDoorPoint(x: Int, y: Int): Boolean {
+        if (field[x + 1][y] + field[x - 1][y] == 2 && field[x][y + 1] + field[x][y - 1] == 0) {
+            return false
+        }
+        if (field[x + 1][y] + field[x - 1][y] == 0 && field[x][y + 1] + field[x][y - 1] == 2) {
+            return false
+        }
+        return true
     }
 
     private fun createRoom(): Point {
