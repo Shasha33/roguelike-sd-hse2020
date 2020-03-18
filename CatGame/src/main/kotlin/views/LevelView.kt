@@ -1,27 +1,39 @@
 package views
 
 import controller.MainController
-import data.Context
-import data.GameObject
-import data.Point
+import data.*
 import javafx.collections.FXCollections.observableArrayList
+import javafx.scene.layout.Background
+import javafx.scene.paint.Color
 import javafx.scene.text.TextFlow
 import tornadofx.*
-import java.awt.TextField
+
 
 class LevelView : View() {
 
     val controller: MainController by inject()
 
-    override val root = borderpane{}
+    override val root = borderpane{
+        style {
+            backgroundColor += Color.BLACK
+        }
+    }
 
     fun drawContext(ctx: Map<Point, List<GameObject>>) {
         with(root) {
             center {
-                textflow {
+                gridpane {
                     for ((point, list) in ctx.entries) {
-//                        ctx
-
+                        list.firstOrNull()?.let {
+                            val sprite = when(it) {
+                                is Wall -> "█"
+                                is Player -> "\uD83D\uDC31"
+                                is DoorUp -> "\uD83D\uDEAA"
+                                is DoorDown -> "\uD83D\uDEAA"
+                                else -> ""
+                            }
+                            text(sprite)
+                        }
                     }
                 }
             }
