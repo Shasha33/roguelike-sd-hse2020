@@ -1,6 +1,7 @@
 package logic
 
 import data.Context
+import event.Event
 
 class GameManager {
     private val levelLoader = LevelLoader()
@@ -15,10 +16,10 @@ class GameManager {
         return levelLoader.loadFrom(path)
     }
 
-    fun runLevel(context: Context): GameLoop {
+    fun runLevel(context: Context, eventList: List<Event> = emptyList()): GameLoop {
 //        val gameLoop = gameFactory.createGame(context)
-        val gameLoop = GameLoop(context)
-        // TODO run
+        val gameLoop = GameLoop(context, eventList)
+        gameLoop.run()
         return gameLoop
     }
 }

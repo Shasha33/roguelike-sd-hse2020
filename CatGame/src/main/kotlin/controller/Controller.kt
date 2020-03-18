@@ -1,26 +1,22 @@
 package controller
 
 import data.Context
-import data.GameObject
-import data.Point
-import javafx.beans.property.MapProperty
-import javafx.beans.property.SimpleMapProperty
-import javafx.collections.ObservableMap
+import event.PlayerEvent
 import logic.GameManager
 import tornadofx.Controller
-import tornadofx.ItemViewModel
 import java.io.File
 import java.util.concurrent.ConcurrentLinkedQueue
 import kotlin.random.Random
 
-class MainController: Controller() {
+class MainController : Controller() {
     var usePath: File? = null
     private val channel = ConcurrentLinkedQueue<String>()
     private val gameManager = GameManager()
 
-    fun addToActionQueue(button:String) {
+    fun addToActionQueue(button: String) {
         channel.add(button)
     }
+
     fun getContext(): Context? {
         TODO()
     }
@@ -32,7 +28,7 @@ class MainController: Controller() {
     fun runGame() {
         runAsync {
             val lvl = gameManager.createLevel(Random.nextInt())
-            val loop = gameManager.runLevel(lvl)
+            val loop = gameManager.runLevel(lvl, listOf(PlayerEvent(channel)))
         }
     }
 }
