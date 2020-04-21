@@ -8,9 +8,10 @@ class GameLoop(private val context: Context, private val eventList : List<Event>
         val worldSimulation = WorldSimulation()
         val eventBus = EventBus()
         worldSimulation.addEvents(eventBus)
-        for (event in eventList) {
-            eventBus.addEvent(event)
-        }
+        eventBus.addAll(eventList)
+
+        val ai = AI()
+        eventBus.addAll(ai.aiAction(context))
 
         var result = EventResult(ExitCode.CONTINUE)
         while (result.exitCode == ExitCode.CONTINUE) {
