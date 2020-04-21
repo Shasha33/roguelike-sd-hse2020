@@ -1,32 +1,31 @@
 package views
 
 import controller.MainController
-import data.*
+import data.GameObject
+import data.Point
 import javafx.beans.property.SimpleStringProperty
-import javafx.beans.value.ObservableValue
-import javafx.collections.FXCollections.observableArrayList
 import javafx.scene.input.KeyEvent
-import javafx.scene.layout.Background
 import javafx.scene.layout.GridPane
 import javafx.scene.paint.Color
-import javafx.scene.text.TextFlow
 import tornadofx.*
 import java.awt.Font
 
 
 class LevelView : View() {
-
-    private val wSize: Int = 50
-    private val hSize: Int = 50
     private val controller: MainController by inject()
+    private val wSize = controller.getContext().width
+    private val hSize = controller.getContext().height
     private lateinit var gameRoot: GridPane
 
 
     private val render = LevelRender()
-//    private val fieldModel = GameFieldModel()
     private val fieldProperty = SimpleStringProperty(this, "field", render.drawContext(wSize, hSize, mapOf()))
     private var field by fieldProperty
 
+    init {
+        controller.runGame()
+        update(controller.getContext().getMap())
+    }
 
     override val root = vbox {
         style {
@@ -46,11 +45,6 @@ class LevelView : View() {
                 font = javafx.scene.text.Font.font(Font.MONOSPACED)
             }
         }
-    }
-
-    init {
-        controller.runGame()
-        update(controller.getContext()?.getMap()!!)
     }
 
     fun update(ctx: Map<Point, List<GameObject>>) {

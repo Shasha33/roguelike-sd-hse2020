@@ -15,15 +15,14 @@ class MainController : Controller() {
     var usePath: File? = null
     private val channel = ConcurrentLinkedQueue<String>()
     private val gameManager = GameManager()
+    private var context = gameManager.createLevel(Random.nextInt())
 
     fun addToActionQueue(button: String) {
         channel.add(button)
     }
 
-    fun getContext(): Context? {
-        val ctx = Context(100, 100)
-        ctx.addObject(Player(), Point(2, 2))
-        return ctx
+    fun getContext(): Context {
+        return context
     }
 
     fun saveContext(saveDir: File) {
@@ -31,13 +30,13 @@ class MainController : Controller() {
     }
 
     fun runGame() {
+        context = gameManager.createLevel(Random.nextInt())
         runAsync {
-            val lvl = gameManager.createLevel(Random.nextInt())
-            lvl.addReaction {
+            context.addReaction {
                 //TODO call level update
                 tornadofx.runLater { find<LevelView>().update(it) }
             }
-            val loop = gameManager.runLevel(lvl, listOf(PlayerEvent(channel)))
+            val loop = gameManager.runLevel(context, listOf(PlayerEvent(channel)))
         }
     }
 }
