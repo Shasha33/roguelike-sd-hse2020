@@ -2,6 +2,7 @@ package logic
 
 import data.Context
 import event.Event
+import event.ExitCode
 
 class GameManager {
     private val levelLoader = LevelLoader()
@@ -16,10 +17,9 @@ class GameManager {
         return levelLoader.loadFrom(path)
     }
 
-    fun runLevel(context: Context, eventList: List<Event> = emptyList()): GameLoop {
+    fun runLevel(context: Context, eventList: List<Event> = emptyList()): ExitCode {
 //        val gameLoop = gameFactory.createGame(context)
         val gameLoop = GameLoop(context, eventList)
-        gameLoop.run()
-        return gameLoop
+        return gameLoop.run()
     }
 }

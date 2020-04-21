@@ -3,6 +3,7 @@ package controller
 import data.Context
 import data.Player
 import data.Point
+import event.ExitCode
 import event.PlayerEvent
 import logic.GameManager
 import tornadofx.Controller
@@ -36,7 +37,12 @@ class MainController : Controller() {
                 //TODO call level update
                 tornadofx.runLater { find<LevelView>().update(it) }
             }
-            val loop = gameManager.runLevel(context, listOf(PlayerEvent(channel)))
+            val exitCode = gameManager.runLevel(context, listOf(PlayerEvent(channel)))
+            when(exitCode) {
+                ExitCode.GO_DOWN, ExitCode.GO_UP -> runGame()
+                ExitCode.EXIT -> println("AAAAAAA") // you died
+                else -> println("AAA") //should not happen
+            }
         }
     }
 }

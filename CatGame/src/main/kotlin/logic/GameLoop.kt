@@ -4,7 +4,7 @@ import data.Context
 import event.*
 
 class GameLoop(private val context: Context, private val eventList : List<Event>) {
-    fun run() {
+    fun run(): ExitCode {
         val worldSimulation = WorldSimulation()
         val eventBus = EventBus()
         worldSimulation.addEvents(eventBus)
@@ -16,5 +16,6 @@ class GameLoop(private val context: Context, private val eventList : List<Event>
         while (result.exitCode == ExitCode.CONTINUE) {
             result = eventBus.callAll(context)
         }
+        return result.exitCode
     }
 }
