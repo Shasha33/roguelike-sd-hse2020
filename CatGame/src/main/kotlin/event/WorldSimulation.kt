@@ -41,7 +41,10 @@ class DieEvent : Event {
         context.getMap().forEach {
             for (gameObject in it.value) {
                 if (gameObject is Unit && !gameObject.isAlive()) {
-                       context.removeObject(Unit::class, it.key)
+                    context.removeObject(Unit::class, it.key)
+                    if (gameObject is Player) {
+                        return EventResult(ExitCode.EXIT, "player is already dead")
+                    }
                 }
             }
         }

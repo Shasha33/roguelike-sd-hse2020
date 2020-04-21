@@ -71,7 +71,7 @@ class Context(val height: Int, val width: Int) {
     }
 
     fun getTypeObjectAt(type: KClass<out GameObject>, p: Point): GameObject? {
-        return getObjectsAt(p)?.singleOrNull { type.isInstance(type) }
+        return getObjectsAt(p)?.singleOrNull { type.isInstance(it) }
     }
 
     fun getPlayer(): Player? {

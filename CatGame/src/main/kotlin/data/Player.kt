@@ -21,7 +21,7 @@ class Wall : Furniture
 interface GameObject
 
 abstract class Unit : GameObject {
-    private var hp: Int = 100
+    var hp: Int = 100
     val strength: Int = 10
 
     fun damage(value: Int) {
