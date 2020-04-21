@@ -9,7 +9,7 @@ data class Point(val x: Int, val y: Int)
 class Context(val height: Int, val width: Int) {
     private val objects = mutableMapOf<Point, MutableList<GameObject>>()
     private var runnableReaction : (Map<Point, List<GameObject>>) -> Unit = {}
-    private var stepsCount : Int by Delegates.observable(0) { _, _, _ ->
+    var stepsCount : Int by Delegates.observable(0) { _, _, _ ->
         runnableReaction.invoke(getMap())
     }
 

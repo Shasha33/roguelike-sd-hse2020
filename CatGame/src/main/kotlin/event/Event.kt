@@ -38,7 +38,9 @@ class PlayerEvent(private val queue: LinkedBlockingQueue<String>) : Event {
         val player = context.getPlayer() ?: return
         val enemy = context.getTypeObjectAt(Enemy::class, enemyPoint) as? Enemy ?: return
         enemy.damage(player.damageValue)
+        context.stepsCount++
         player.damage(enemy.damageValue)
+        context.stepsCount++
     }
 }
 
