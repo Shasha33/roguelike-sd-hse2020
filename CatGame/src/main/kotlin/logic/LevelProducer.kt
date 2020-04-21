@@ -5,8 +5,9 @@ import java.lang.Integer.min
 import kotlin.random.Random
 
 class LevelProducer {
-    private val levelHeight = 50
-    private val levelWidth = 50
+    private val levelHeight = 30
+    private val levelWidth = 80
+
     private lateinit var random: Random
     private val field = Array(levelHeight) {Array(levelWidth) {0} }
 
@@ -70,7 +71,7 @@ class LevelProducer {
     }
 
     private fun createContext(): Context {
-        val context = Context()
+        val context = Context(height = levelHeight, width = levelHeight)
         for (i in (0 until levelHeight)) {
             for (j in (0 until levelWidth)) {
                 if (field[i][j] == 0) {

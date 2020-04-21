@@ -4,7 +4,7 @@ import kotlin.Unit
 import kotlin.properties.Delegates
 import kotlin.reflect.KClass
 
-class Context {
+class Context(val height: Int, val width: Int) {
     private val objects = mutableMapOf<Point, MutableList<GameObject>>()
     private var runnableReaction : (Map<Point, List<GameObject>>) -> Unit = {}
     private var stepsCount : Int by Delegates.observable(0) { _, _, _ ->

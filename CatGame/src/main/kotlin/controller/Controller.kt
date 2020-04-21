@@ -21,7 +21,7 @@ class MainController : Controller() {
     }
 
     fun getContext(): Context? {
-        val ctx = Context()
+        val ctx = Context(100, 100)
         ctx.addObject(Player(), Point(2, 2))
         return ctx
     }
