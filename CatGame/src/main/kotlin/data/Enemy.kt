@@ -5,7 +5,7 @@ import event.EventResult
 import event.ExitCode
 import kotlin.math.abs
 
-class Enemy(val strategy: EnemyStrategy) : Unit() {
+class Enemy(var strategy: EnemyStrategy) : Unit() {
     override val strength = 5
     override var hp = 50
 }

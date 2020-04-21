@@ -1,10 +1,15 @@
 package data
 
 import kotlin.Unit
+import kotlin.math.abs
 import kotlin.properties.Delegates
 import kotlin.reflect.KClass
 
-data class Point(val x: Int, val y: Int)
+data class Point(val x: Int, val y: Int) {
+    fun dist(p: Point): Int {
+        return abs(p.x - x) + abs(p.y - y)
+    }
+}
 
 class Context(val height: Int, val width: Int) {
     private val objects = mutableMapOf<Point, MutableList<GameObject>>()
