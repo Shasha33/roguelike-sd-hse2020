@@ -44,7 +44,6 @@ class LevelView : View() {
                 padding = box(10.px)
                 font = javafx.scene.text.Font.font(Font.MONOSPACED)
             }
-            isWrapText = true
         }
     }
 
