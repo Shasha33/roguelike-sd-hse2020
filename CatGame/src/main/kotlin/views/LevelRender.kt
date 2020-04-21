@@ -4,8 +4,8 @@ import data.*
 
 class LevelRender {
 
-    fun drawContext(weight: Int, height: Int, ctx: Map<Point, List<GameObject>>): String {
-        val builder = LevelBuilder(weight, height)
+    fun drawContext(width: Int, height: Int, ctx: Map<Point, List<GameObject>>): String {
+        val builder = LevelBuilder(width, height)
         for ((point, list) in ctx.entries) {
             if (!list.isEmpty()) {
                 val sprite = loadSprite(list.first())
