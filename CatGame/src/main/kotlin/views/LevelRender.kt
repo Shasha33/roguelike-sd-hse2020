@@ -20,7 +20,7 @@ class LevelRender {
             is Wall -> "█"
             is Player -> "\uD83D\uDC31"
             is DoorUp -> "\uD83D\uDEAA"
-            is DoorDown -> "\uD83D\uDEAA"
+            is DoorDown -> "\uD83D\uDD73"
 //            is Player -> "P"
 //            is DoorUp -> "U"
 //            is DoorDown -> "D"
