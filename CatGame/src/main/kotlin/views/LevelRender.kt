@@ -21,6 +21,9 @@ class LevelRender {
             is Player -> "\uD83D\uDC31"
             is DoorUp -> "\uD83D\uDEAA"
             is DoorDown -> "\uD83D\uDEAA"
+//            is Player -> "P"
+//            is DoorUp -> "U"
+//            is DoorDown -> "D"
             else -> " "
         }
 
@@ -32,14 +35,14 @@ class LevelBuilder(val w: Int, val h: Int) {
     init {
         val iniList = generateSequence { " " }.take(w).toList()
         lines = generateSequence { iniList.toMutableList() }.take(h).toList()
-    }
+}
 
-    fun drawOn(x: Int, y: Int, sprite: String): Boolean {
-        if (x < 0 || x >= w || y < 0 || y >= h) {
-            // ignoring
-            return false
-        }
-        lines[y][x] = sprite
+fun drawOn(x: Int, y: Int, sprite: String): Boolean {
+    if (x < 0 || x >= w || y < 0 || y >= h) {
+        // ignoring
+        return false
+    }
+    lines[y][x] = sprite
         return true
     }
 

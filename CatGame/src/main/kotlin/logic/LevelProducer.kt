@@ -5,8 +5,8 @@ import java.lang.Integer.min
 import kotlin.random.Random
 
 class LevelProducer {
-    private val levelHeight = 100
-    private val levelWidth = 100
+    private val levelHeight = 50
+    private val levelWidth = 50
     private lateinit var random: Random
     private val field = Array(levelHeight) {Array(levelWidth) {0} }
 

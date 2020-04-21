@@ -11,12 +11,13 @@ import javafx.scene.layout.GridPane
 import javafx.scene.paint.Color
 import javafx.scene.text.TextFlow
 import tornadofx.*
+import java.awt.Font
 
 
 class LevelView : View() {
 
-    private val wSize: Int = 10
-    private val hSize: Int = 10
+    private val wSize: Int = 50
+    private val hSize: Int = 50
     private val controller: MainController by inject()
     private lateinit var gameRoot: GridPane
 
@@ -40,7 +41,10 @@ class LevelView : View() {
             bind(fieldProperty)
             style {
                 textFill = Color.WHITE
+                padding = box(10.px)
+                font = javafx.scene.text.Font.font(Font.MONOSPACED)
             }
+            isWrapText = true
         }
     }
 
