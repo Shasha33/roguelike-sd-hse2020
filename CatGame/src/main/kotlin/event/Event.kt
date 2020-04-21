@@ -27,14 +27,14 @@ class PlayerEvent(private val queue: LinkedBlockingQueue<String>) : Event {
         }
 
         if (context.containsClass(Enemy::class, newPoint)) {
-            attack(context, playerPoint, newPoint)
+            attack(context, newPoint)
         } else if (!context.isWall(newPoint)) {
             context.moveObject(Player::class, playerPoint, newPoint)
         }
         return EventResult(ExitCode.CONTINUE)
     }
 
-    private fun attack(context: Context, playerPoint: Point, enemyPoint: Point) {
+    private fun attack(context: Context, enemyPoint: Point) {
         val player = context.getPlayer() ?: return
         val enemy = context.getTypeObjectAt(Enemy::class, enemyPoint) as? Enemy ?: return
         enemy.damage(player.strength)
