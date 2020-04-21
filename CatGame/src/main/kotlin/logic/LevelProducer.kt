@@ -9,9 +9,10 @@ class LevelProducer {
     private val levelWidth = 100
 
     private lateinit var random: Random
-    private val field = Array(levelHeight) {Array(levelWidth) {0} }
+    private var field = Array(levelHeight) {Array(levelWidth) {0} }
 
     fun create(seed: Int): Context {
+        field = Array(levelHeight) {Array(levelWidth) {0} }
         random = Random(seed)
 
         val roomsNumber = random.nextInt(2, 10)
