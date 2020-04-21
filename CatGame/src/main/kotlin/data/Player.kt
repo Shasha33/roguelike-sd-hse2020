@@ -19,8 +19,13 @@ class Wall : Furniture
 interface GameObject
 
 abstract class Unit : GameObject {
-    open protected var hp: Int = 100
-    open val strength: Int = 10
+    protected open var hp: Int = 100
+    protected open val strength: Int = 10
+
+    val damageValue: Int
+        get() {
+        return if (isAlive()) strength else 0
+    }
 
     fun damage(value: Int) {
         hp -= value
