@@ -1,3 +1,4 @@
+import controller.MainController
 import javafx.stage.Stage
 import tornadofx.*
 import tornadofx.View
@@ -10,6 +11,12 @@ class MyApp: App(MenuView::class) {
         super.start(stage)
         stage.width = 1000.0
         stage.height = 650.0
+    }
+    private val controller: MainController by inject()
+
+    override fun stop() {
+        controller.stopGame()
+        super.stop()
     }
 }
 

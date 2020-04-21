@@ -1,20 +1,18 @@
 package controller
 
 import data.Context
-import data.Player
-import data.Point
 import event.ExitCode
 import event.PlayerEvent
 import logic.GameManager
 import tornadofx.Controller
 import views.LevelView
 import java.io.File
-import java.util.concurrent.ConcurrentLinkedQueue
+import java.util.concurrent.LinkedBlockingQueue
 import kotlin.random.Random
 
 class MainController : Controller() {
     var usePath: File? = null
-    private val channel = ConcurrentLinkedQueue<String>()
+    private val channel = LinkedBlockingQueue<String>()
     private val gameManager = GameManager()
     private var context = gameManager.createLevel(Random.nextInt())
 
@@ -30,6 +28,10 @@ class MainController : Controller() {
         TODO()
     }
 
+    fun stopGame() {
+        channel.add("ItsTimeToStop")
+    }
+
     fun runGame() {
         context = gameManager.createLevel(Random.nextInt())
         runAsync {
@@ -40,7 +42,7 @@ class MainController : Controller() {
             val exitCode = gameManager.runLevel(context, listOf(PlayerEvent(channel)))
             when(exitCode) {
                 ExitCode.GO_DOWN, ExitCode.GO_UP -> runGame()
-                ExitCode.EXIT -> println("AAAAAAA") // you died
+                ExitCode.EXIT -> println("Game Over") // you died
                 else -> println("AAA") //should not happen
             }
         }

@@ -1,8 +1,8 @@
 package event
 
 import data.*
-import java.util.*
-import java.util.concurrent.ConcurrentLinkedQueue
+import java.util.concurrent.LinkedBlockingQueue
+import java.util.concurrent.TimeUnit
 
 interface Event {
     fun apply(context: Context): EventResult
@@ -11,9 +11,12 @@ interface Event {
 class EventResult(val exitCode: ExitCode, val message: String = "")
 
 
-class PlayerEvent(private val queue: ConcurrentLinkedQueue<String>) : Event {
+class PlayerEvent(private val queue: LinkedBlockingQueue<String>) : Event {
     override fun apply(context: Context): EventResult {
-        val element = queue.poll() ?: "null"
+        val element = queue.poll(1, TimeUnit.DAYS) ?: "null"
+        if (element == "ItsTimeToStop") {
+            return EventResult(ExitCode.EXIT)
+        }
         val playerPoint = context.getPlayerPoint() ?: return EventResult(ExitCode.EXIT)
         val newPoint = when(element) {
             "UP" -> Point(playerPoint.x, playerPoint.y - 1)

@@ -50,7 +50,6 @@ class LevelView : View() {
     fun update(ctx: Map<Point, List<GameObject>>) {
         field = render.drawContext(wSize, hSize, ctx)
     }
-
 }
 
 //class GameFieldModel(field: String) : ItemViewModel<String>(field) {
