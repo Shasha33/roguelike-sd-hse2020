@@ -19,7 +19,7 @@ class Wall : Furniture
 interface GameObject
 
 abstract class Unit : GameObject {
-    open protected var hp: Int = 100
+    open var hp: Int = 100
     open val strength: Int = 10
 
     fun damage(value: Int) {
