@@ -9,8 +9,8 @@ import views.MenuView
 class MyApp: App(MenuView::class) {
     override fun start(stage: Stage) {
         super.start(stage)
-        stage.width = 1000.0
-        stage.height = 650.0
+//        stage.width = 500.0
+//        stage.height = 500.0
     }
     private val controller: MainController by inject()
 

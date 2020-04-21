@@ -11,7 +11,7 @@ import tornadofx.*
 import java.awt.Font
 
 
-class LevelView : View() {
+class LevelView : View("Level") {
     private val controller: MainController by inject()
     private val wSize = controller.getContext().width
     private val hSize = controller.getContext().height
@@ -28,13 +28,15 @@ class LevelView : View() {
     }
 
     override val root = vbox {
+        useMaxSize = true
+        primaryStage.height = hSize * 21.0
+        primaryStage.width = wSize * 10.0
         style {
             backgroundColor += Color.BLACK
         }
         keyboard {
             addEventHandler(KeyEvent.KEY_PRESSED) {
                 controller.addToActionQueue(it.code.name)
-//                println(it.code)
             }
         }
         label {
@@ -51,7 +53,3 @@ class LevelView : View() {
         field = render.drawContext(wSize, hSize, ctx)
     }
 }
-
-//class GameFieldModel(field: String) : ItemViewModel<String>(field) {
-//    val field = bind(String)
-//}
