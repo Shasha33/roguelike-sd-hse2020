@@ -8,6 +8,7 @@ class LevelProducer {
     private val levelHeight = 30
     private val levelWidth = 100
     private val enemiesCount = 4
+    private val clewCount = 20
 
     private lateinit var random: Random
     private var field = Array(levelHeight) {Array(levelWidth) {0} }
@@ -145,7 +146,7 @@ class LevelProducer {
 
     private fun createClews(context: Context) {
         val emptyPoints = getEmptyPoints().toMutableList()
-        val randomCount = random.nextInt(emptyPoints.size / 2)
+        val randomCount = random.nextInt(clewCount)
         repeat(randomCount) {
             val randomIndex = random.nextInt(emptyPoints.size)
             context.addObject(Clew(), emptyPoints[randomIndex].flip())

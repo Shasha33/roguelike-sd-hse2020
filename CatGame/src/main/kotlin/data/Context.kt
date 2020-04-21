@@ -9,7 +9,7 @@ data class Point(val x: Int, val y: Int)
 class Context(val height: Int, val width: Int) {
     private val objects = mutableMapOf<Point, MutableList<GameObject>>()
     private var runnableReaction : (Map<Point, List<GameObject>>) -> Unit = {}
-    private var stepsCount : Int by Delegates.observable(0) { _, _, _ ->
+    var stepsCount : Int by Delegates.observable(0) { _, _, _ ->
         runnableReaction.invoke(getMap())
     }
 
@@ -23,7 +23,7 @@ class Context(val height: Int, val width: Int) {
     }
 
     fun moveObject(type: KClass<out GameObject>, from: Point, to: Point) {
-        if (!isPointInField(to)) {
+        if (!isPointInField(to) || isWall(to)) {
             return
         }
         val currentObject = (objects[from] ?: return).singleOrNull { type.isInstance(it) } ?: return
@@ -34,15 +34,6 @@ class Context(val height: Int, val width: Int) {
 
     private fun isPointInField(p: Point): Boolean {
         return !(p.x >= width || p.x < 0 || p.y < 0 || p.y >= height)
-    }
-
-    fun moveObject(gameObject: GameObject, from: Point, to: Point) {
-        if (!isPointInField(to)) {
-            return
-        }
-        objects[from]?.remove(gameObject)
-        objects.getOrPut(to, { mutableListOf()}).add(gameObject)
-        stepsCount++
     }
 
     fun addObject(gameObject: GameObject, p: Point) {

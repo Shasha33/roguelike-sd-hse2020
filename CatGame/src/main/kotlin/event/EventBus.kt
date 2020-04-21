@@ -13,6 +13,10 @@ class EventBus {
         events.remove(event)
     }
 
+    fun addAll(events: List<Event>) {
+        this.events.addAll(events)
+    }
+
     fun callAll(context: Context): EventResult {
         for (event in events) {
             val result = event.apply(context)
