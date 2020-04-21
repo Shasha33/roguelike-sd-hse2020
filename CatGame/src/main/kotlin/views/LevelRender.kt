@@ -24,6 +24,7 @@ class LevelRender {
             is Player -> "☺"
             is DoorUp -> "˄"
             is DoorDown -> "˅"
+            is Enemy -> "©"
             else -> " "
         }
 
