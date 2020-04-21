@@ -22,7 +22,15 @@ interface GameObject
 
 abstract class Unit : GameObject {
     private var hp: Int = 100
-    private var attack: Int = 10
+    val strength: Int = 10
+
+    fun damage(value: Int) {
+        hp -= value
+    }
+
+    fun isAlive(): Boolean {
+        return hp > 0
+    }
 }
 
 interface Pickable : GameObject

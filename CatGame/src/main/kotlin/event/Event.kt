@@ -14,7 +14,7 @@ class EventResult(val exitCode: ExitCode, val message: String = "")
 class PlayerEvent(private val queue: LinkedBlockingQueue<String>) : Event {
     override fun apply(context: Context): EventResult {
         val element = queue.poll(1, TimeUnit.DAYS) ?: "null"
-        if (element == "ItsTimeToStop") {
+        if (element == "ItsTimeToStop") { // TODO: heh
             return EventResult(ExitCode.EXIT)
         }
         val playerPoint = context.getPlayerPoint() ?: return EventResult(ExitCode.EXIT)
@@ -25,10 +25,20 @@ class PlayerEvent(private val queue: LinkedBlockingQueue<String>) : Event {
             "RIGHT" -> Point(playerPoint.x + 1, playerPoint.y)
             else -> return EventResult(ExitCode.CONTINUE)
         }
-        if (!context.isWall(newPoint)) {
+
+        if (context.containsClass(Enemy::class, newPoint)) {
+            attack(context, playerPoint, newPoint)
+        } else if (!context.isWall(newPoint)) {
             context.moveObject(Player::class, playerPoint, newPoint)
         }
         return EventResult(ExitCode.CONTINUE)
+    }
+
+    private fun attack(context: Context, playerPoint: Point, enemyPoint: Point) {
+        val player = context.getPlayer() ?: return
+        val enemy = context.getTypeObjectAt(Enemy::class, enemyPoint) as? Enemy ?: return
+        enemy.damage(player.strength)
+        player.damage(enemy.strength)
     }
 }
 
