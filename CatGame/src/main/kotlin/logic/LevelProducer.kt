@@ -99,6 +99,7 @@ class LevelProducer {
                     else -> PassiveAggressiveStrategy()
                 }
             context.addObject(Enemy(strategy), emptyPoints[randomIndex].flip())
+            field[emptyPoints[randomIndex].x][emptyPoints[randomIndex].y] = 0
             emptyPoints.removeAt(randomIndex)
         }
     }
@@ -148,6 +149,7 @@ class LevelProducer {
         repeat(randomCount) {
             val randomIndex = random.nextInt(emptyPoints.size)
             context.addObject(Clew(), emptyPoints[randomIndex].flip())
+            field[emptyPoints[randomIndex].x][emptyPoints[randomIndex].y] = 0
             emptyPoints.removeAt(randomIndex)
         }
     }
