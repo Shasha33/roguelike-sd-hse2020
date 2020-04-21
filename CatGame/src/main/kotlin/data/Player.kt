@@ -7,10 +7,8 @@ import com.google.gson.JsonSerializer
 import java.lang.reflect.Type
 
 class Player : Unit() {
-    private var cnt = 0
-
     fun addClew() {
-        cnt++
+        hp++
     }
 }
 
@@ -21,8 +19,8 @@ class Wall : Furniture
 interface GameObject
 
 abstract class Unit : GameObject {
-    var hp: Int = 100
-    val strength: Int = 10
+    open protected var hp: Int = 100
+    open val strength: Int = 10
 
     fun damage(value: Int) {
         hp -= value

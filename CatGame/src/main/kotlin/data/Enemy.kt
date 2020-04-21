@@ -5,7 +5,8 @@ import event.EventResult
 import event.ExitCode
 
 class Enemy(val strategy: EnemyStrategy) : Unit() {
-
+    override val strength = 5
+    override var hp = 50
 }
 
 interface EnemyStrategy {
