@@ -23,9 +23,10 @@ class Context(val height: Int, val width: Int) {
     }
 
     fun moveObject(type: KClass<out GameObject>, from: Point, to: Point) {
-        if (!isPointInField(to) || isWall(to)) {
+        if (!isPointInField(to) || !isEmpty(to)) {
             return
         }
+
         val currentObject = (objects[from] ?: return).singleOrNull { type.isInstance(it) } ?: return
         objects[from]?.remove(currentObject)
         objects.getOrPut(to, { mutableListOf()}).add(currentObject)
@@ -76,6 +77,10 @@ class Context(val height: Int, val width: Int) {
 
     fun isWall(p: Point): Boolean {
         return containsClass(Wall::class, p)
+    }
+
+    fun isEmpty(p: Point): Boolean{
+        return objects[p]?.isEmpty() ?: true
     }
 
     fun getPointByObject(gameObject: GameObject): Point? {
