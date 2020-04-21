@@ -12,7 +12,7 @@ class Context {
     }
 
     fun getMap() : Map<Point, List<GameObject>> {
-        return objects
+        return HashMap(objects)
     }
 
     fun addReaction(reaction: () -> Unit) {
