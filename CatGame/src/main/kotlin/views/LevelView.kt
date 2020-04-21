@@ -27,6 +27,7 @@ class LevelView : View() {
     private val fieldProperty = SimpleStringProperty(this, "field", render.drawContext(wSize, hSize, mapOf()))
     private var field by fieldProperty
 
+
     override val root = vbox {
         style {
             backgroundColor += Color.BLACK
