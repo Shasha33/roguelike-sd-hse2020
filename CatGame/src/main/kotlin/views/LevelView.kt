@@ -50,11 +50,11 @@ class LevelView : View() {
 
     init {
         controller.runGame()
-        update(controller.getContext()!!)
+        update(controller.getContext()?.getMap()!!)
     }
 
-    fun update(context: Context) {
-        field = render.drawContext(wSize, hSize, context.getMap())
+    fun update(ctx: Map<Point, List<GameObject>>) {
+        field = render.drawContext(wSize, hSize, ctx)
     }
 
 }

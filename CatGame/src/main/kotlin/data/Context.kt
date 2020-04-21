@@ -6,16 +6,16 @@ import kotlin.reflect.KClass
 
 class Context {
     private val objects = mutableMapOf<Point, MutableList<GameObject>>()
-    private var runnableReaction : () -> Unit = {}
+    private var runnableReaction : (Map<Point, List<GameObject>>) -> Unit = {}
     private var stepsCount : Int by Delegates.observable(0) { _, _, _ ->
-        runnableReaction.invoke()
+        runnableReaction.invoke(getMap())
     }
 
     fun getMap() : Map<Point, List<GameObject>> {
         return HashMap(objects)
     }
 
-    fun addReaction(reaction: () -> Unit) {
+    fun addReaction(reaction: (Map<Point, List<GameObject>>) -> Unit) {
         runnableReaction = reaction
         stepsCount++
     }

@@ -35,7 +35,7 @@ class MainController : Controller() {
             val lvl = gameManager.createLevel(Random.nextInt())
             lvl.addReaction {
                 //TODO call level update
-                tornadofx.runLater { find<LevelView>().update(lvl) }
+                tornadofx.runLater { find<LevelView>().update(it) }
             }
             val loop = gameManager.runLevel(lvl, listOf(PlayerEvent(channel)))
         }
