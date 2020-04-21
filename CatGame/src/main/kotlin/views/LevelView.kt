@@ -2,6 +2,8 @@ package views
 
 import controller.MainController
 import data.*
+import javafx.beans.property.SimpleStringProperty
+import javafx.beans.value.ObservableValue
 import javafx.collections.FXCollections.observableArrayList
 import javafx.scene.input.KeyEvent
 import javafx.scene.layout.Background
@@ -13,12 +15,17 @@ import tornadofx.*
 
 class LevelView : View() {
 
-    val controller: MainController by inject()
+    private val wSize: Int = 10
+    private val hSize: Int = 10
+    private val controller: MainController by inject()
     private lateinit var gameRoot: GridPane
 
-    init {
-        controller.runGame()
-    }
+
+    private val render = LevelRender()
+//    private val fieldModel = GameFieldModel()
+    private val fieldProperty = SimpleStringProperty(this, "field", render.drawContext(wSize, hSize, mapOf()))
+    private var field by fieldProperty
+
     override val root = vbox {
         style {
             backgroundColor += Color.BLACK
@@ -29,33 +36,25 @@ class LevelView : View() {
 //                println(it.code)
             }
         }
-        gridpane {
-            gameRoot = this
-        }
-    }
-
-
-
-    fun drawContext(ctx: Map<Point, List<GameObject>>) {
-        with(gameRoot) {
-            for ((point, list) in ctx.entries) {
-                list.firstOrNull()?.let {
-                    val sprite = when(it) {
-                        is Wall -> "█"
-                        is Player -> "\uD83D\uDC31"
-                        is DoorUp -> "\uD83D\uDEAA"
-                        is DoorDown -> "\uD83D\uDEAA"
-                        else -> ""
-                    }
-                    text(sprite) {
-                        gridpaneConstraints {
-                            columnRowIndex(point.x,point.y)
-                        }
-                    }
-                }
+        label {
+            bind(fieldProperty)
+            style {
+                textFill = Color.WHITE
             }
         }
     }
 
+    init {
+        controller.runGame()
+        update(controller.getContext()!!)
+    }
+
+    fun update(context: Context) {
+        field = render.drawContext(wSize, hSize, context.getMap())
+    }
 
 }
+
+//class GameFieldModel(field: String) : ItemViewModel<String>(field) {
+//    val field = bind(String)
+//}

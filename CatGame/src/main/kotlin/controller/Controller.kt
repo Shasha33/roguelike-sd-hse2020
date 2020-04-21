@@ -1,6 +1,8 @@
 package controller
 
 import data.Context
+import data.Player
+import data.Point
 import event.PlayerEvent
 import logic.GameManager
 import tornadofx.Controller
@@ -19,7 +21,9 @@ class MainController : Controller() {
     }
 
     fun getContext(): Context? {
-        TODO()
+        val ctx = Context()
+        ctx.addObject(Player(), Point(2, 2))
+        return ctx
     }
 
     fun saveContext(saveDir: File) {
@@ -29,10 +33,10 @@ class MainController : Controller() {
     fun runGame() {
         runAsync {
             val lvl = gameManager.createLevel(Random.nextInt())
-            lvl.addReaction {
-                //TODO call level update
-                find<LevelView>().drawContext(lvl.getMap())
-            }
+//            lvl.addReaction {
+//                //TODO call level update
+//                find<LevelView>().drawContext(lvl.getMap())
+//            }
             val loop = gameManager.runLevel(lvl, listOf(PlayerEvent(channel)))
         }
     }
