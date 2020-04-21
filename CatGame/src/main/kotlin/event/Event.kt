@@ -13,7 +13,7 @@ class EventResult(val exitCode: ExitCode, val message: String = "")
 
 class PlayerEvent(private val queue: ConcurrentLinkedQueue<String>) : Event {
     override fun apply(context: Context): EventResult {
-        val element = queue.elementAtOrElse(0 ) {"null"}
+        val element = queue.poll() ?: "null"
         val playerPoint = context.getPlayerPoint() ?: return EventResult(ExitCode.EXIT)
         val newPoint = when(element) {
             "UP" -> Point(playerPoint.x, playerPoint.y - 1)
