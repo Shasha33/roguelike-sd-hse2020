@@ -95,9 +95,10 @@ class LevelProducer {
         repeat(enemiesCount) {
             val randomIndex = random.nextInt(emptyPoints.size)
             val strategy =
-                when(random.nextInt(2)) {
+                when(random.nextInt(3)) {
                     0 -> PassiveStrategy()
-                    else -> PassiveAggressiveStrategy()
+                    1 -> PassiveAggressiveStrategy()
+                    else -> AggressiveStrategy()
                 }
             context.addObject(Enemy(strategy), emptyPoints[randomIndex].flip())
             field[emptyPoints[randomIndex].x][emptyPoints[randomIndex].y] = 0
