@@ -75,7 +75,7 @@ class LevelProducer {
         for (i in (0 until levelHeight)) {
             for (j in (0 until levelWidth)) {
                 if (field[i][j] == 0) {
-                    context.addObject(Wall(), Point(i, j))
+                    context.addObject(Wall(), Point(j, i))
                 }
             }
         }
@@ -96,12 +96,12 @@ class LevelProducer {
             }
         }
         val randomUpIndex = random.nextInt(emptyPoints.size)
-        context.addObject(DoorUp(), emptyPoints[randomUpIndex])
+        context.addObject(DoorUp(), emptyPoints[randomUpIndex].flip())
         field[emptyPoints[randomUpIndex].x][emptyPoints[randomUpIndex].y] = 0
         emptyPoints.removeAt(randomUpIndex)
 
         val randomDownIndex = random.nextInt(emptyPoints.size)
-        context.addObject(DoorDown(), emptyPoints[randomDownIndex])
+        context.addObject(DoorDown(), emptyPoints[randomDownIndex].flip())
         field[emptyPoints[randomDownIndex].x][emptyPoints[randomDownIndex].y] = 0
     }
 
@@ -116,7 +116,7 @@ class LevelProducer {
         }
         val randomUpIndex = random.nextInt(emptyPoints.size)
         val point = emptyPoints[randomUpIndex]
-        context.addObject(Player(), point)
+        context.addObject(Player(), point.flip())
         field[point.x][point.y] = 0
     }
 
@@ -132,7 +132,7 @@ class LevelProducer {
         val randomCount = random.nextInt(emptyPoints.size / 2)
         repeat(randomCount) {
             val randomIndex = random.nextInt(emptyPoints.size)
-            context.addObject(Clew(), emptyPoints[randomIndex])
+            context.addObject(Clew(), emptyPoints[randomIndex].flip())
             emptyPoints.removeAt(randomIndex)
         }
     }
@@ -181,6 +181,10 @@ class LevelProducer {
 
         return Point(randomX, randomY)
     }
+}
+
+fun Point.flip(): Point {
+    return Point(this.y, this.x)
 }
 
 //for testing
