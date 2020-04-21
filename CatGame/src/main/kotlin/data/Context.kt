@@ -1,8 +1,11 @@
 package data
 
+import com.sun.org.apache.xpath.internal.operations.Bool
 import kotlin.Unit
 import kotlin.properties.Delegates
 import kotlin.reflect.KClass
+
+data class Point(val x: Int, val y: Int)
 
 class Context(val height: Int, val width: Int) {
     private val objects = mutableMapOf<Point, MutableList<GameObject>>()
@@ -21,9 +24,25 @@ class Context(val height: Int, val width: Int) {
     }
 
     fun moveObject(type: KClass<out GameObject>, from: Point, to: Point) {
+        if (!isPointInField(to)) {
+            return
+        }
         val currentObject = (objects[from] ?: return).singleOrNull { type.isInstance(it) } ?: return
         objects[from]?.remove(currentObject)
         objects.getOrPut(to, { mutableListOf()}).add(currentObject)
+        stepsCount++
+    }
+
+    private fun isPointInField(p: Point): Boolean {
+        return !(p.x >= width || p.x < 0 || p.y < 0 || p.y >= height)
+    }
+
+    fun moveObject(gameObject: GameObject, from: Point, to: Point) {
+        if (!isPointInField(to)) {
+            return
+        }
+        objects[from]?.remove(gameObject)
+        objects.getOrPut(to, { mutableListOf()}).add(gameObject)
         stepsCount++
     }
 
@@ -68,6 +87,14 @@ class Context(val height: Int, val width: Int) {
     fun isWall(p: Point): Boolean {
         return containsClass(Wall::class, p)
     }
-}
 
-data class Point(val x: Int, val y: Int)
+    fun getPointByObject(gameObject: GameObject): Point? {
+        return objects.mapNotNull { (p: Point, g: List<GameObject>) ->
+            if (g.any {it == gameObject}) {
+                p
+            } else {
+                null
+            }
+        }.singleOrNull()
+    }
+}

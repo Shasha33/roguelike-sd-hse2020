@@ -6,7 +6,7 @@ import com.google.gson.JsonSerializationContext
 import com.google.gson.JsonSerializer
 import java.lang.reflect.Type
 
-class Player : Unit {
+class Player : Unit() {
     private var cnt = 0
 
     fun addClew() {
@@ -20,7 +20,11 @@ class Wall : Furniture
 
 interface GameObject
 
-interface Unit : GameObject
+abstract class Unit : GameObject {
+    private var hp: Int = 100
+    private var attack: Int = 10
+}
+
 interface Pickable : GameObject
 interface Furniture : GameObject
 
