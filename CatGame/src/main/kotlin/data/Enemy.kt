@@ -44,7 +44,7 @@ class PassiveAggressiveStrategy : EnemyStrategy {
                 }
 
                 for (p in possibleMoves) {
-                    context.moveObject(Enemy::class, point, p)
+                    context.moveObject(unit, point, p)
                 }
 
                 return EventResult(ExitCode.CONTINUE)
@@ -71,7 +71,7 @@ class AggressiveStrategy : EnemyStrategy {
 
                 val possibleMoves = possibleMoves(point, player)
                 for (p in possibleMoves) {
-                    context.moveObject(Enemy::class, point, p)
+                    context.moveObject(unit, point, p)
                 }
 
                 return EventResult(ExitCode.CONTINUE)
