@@ -1,14 +1,13 @@
 package event
 
-import data.Clew
-import data.Context
-import data.DoorDown
-import data.DoorUp
+import data.*
+import data.Unit
 
 class WorldSimulation {
     fun addEvents(eventBus: EventBus) {
         eventBus.addEvent(NewLevelEvent())
         eventBus.addEvent(PickClewEvent())
+        eventBus.addEvent(DieEvent())
     }
 }
 
@@ -32,6 +31,22 @@ class PickClewEvent : Event {
             context.removeObject(Clew::class, playerPoint)
             val player = context.getPlayer()
             player?.addClew()
+        }
+        return EventResult(ExitCode.CONTINUE)
+    }
+}
+
+class DieEvent : Event {
+    override fun apply(context: Context): EventResult {
+        context.getMap().forEach {
+            for (gameObject in it.value) {
+                if (gameObject is Unit && !gameObject.isAlive()) {
+                    context.removeObject(Unit::class, it.key)
+                    if (gameObject is Player) {
+                        return EventResult(ExitCode.EXIT, "player is already dead")
+                    }
+                }
+            }
         }
         return EventResult(ExitCode.CONTINUE)
     }

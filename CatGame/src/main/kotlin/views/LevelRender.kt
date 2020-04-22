@@ -8,8 +8,12 @@ class LevelRender {
         val builder = LevelBuilder(width, height)
         for ((point, list) in ctx.entries) {
             if (!list.isEmpty()) {
-                val sprite = loadSprite(list.first())
+                val obj = list.first()
+                val sprite = loadSprite(obj)
                 builder.drawOn(point.x, point.y, sprite)
+                if (obj is Player) {
+                    builder.hp = obj.hp
+                }
             }
         }
         return builder.toString()
@@ -22,28 +26,31 @@ class LevelRender {
 //            is DoorUp -> "\uD83D\uDEAA"
 //            is DoorDown -> "\uD83D\uDD73"
             is Player -> "☺"
-            is DoorUp -> "˄"
-            is DoorDown -> "˅"
-            else -> " "
+            is DoorUp -> "∆"
+            is DoorDown -> "ӿ"
+            is Enemy -> "©"
+            is Clew -> "@"
+            else -> "X"
         }
 
 }
 
 class LevelBuilder(val w: Int, val h: Int) {
     private val lines: List<MutableList<String>>
+    var hp = -1
 
     init {
         val iniList = generateSequence { " " }.take(w).toList()
         lines = generateSequence { iniList.toMutableList() }.take(h).toList()
-}
-
-fun drawOn(x: Int, y: Int, sprite: String): Boolean {
-    if (x < 0 || x >= w || y < 0 || y >= h) {
-        // ignoring
-        return false
     }
-    lines[y][x] = sprite
-        return true
+
+    fun drawOn(x: Int, y: Int, sprite: String): Boolean {
+        if (x < 0 || x >= w || y < 0 || y >= h) {
+            // ignoring
+            return false
+        }
+        lines[y][x] = sprite
+            return true
     }
 
     override fun toString(): String {
@@ -54,6 +61,8 @@ fun drawOn(x: Int, y: Int, sprite: String): Boolean {
                 }
                 append("\n")
             }
+
+            append(" ".repeat(w/2) + "HP: $hp")
         }
     }
 }

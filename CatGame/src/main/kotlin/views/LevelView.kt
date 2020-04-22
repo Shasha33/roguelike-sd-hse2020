@@ -29,7 +29,7 @@ class LevelView : View("Level") {
 
     override val root = vbox {
         useMaxSize = true
-        primaryStage.height = hSize * 21.0
+        primaryStage.height = hSize * 22.0
         primaryStage.width = wSize * 10.0
         style {
             backgroundColor += Color.BLACK

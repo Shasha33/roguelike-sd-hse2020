@@ -7,6 +7,8 @@ import kotlin.random.Random
 class LevelProducer {
     private val levelHeight = 30
     private val levelWidth = 100
+    private val enemiesCount = 4
+    private val clewCount = 20
 
     private lateinit var random: Random
     private var field = Array(levelHeight) {Array(levelWidth) {0} }
@@ -84,7 +86,36 @@ class LevelProducer {
         createDoors(context)
         createPlayer(context)
         createClews(context)
+        createEnemies(context)
         return context
+    }
+
+    private fun createEnemies(context: Context) {
+        val emptyPoints = getEmptyPoints().toMutableList()
+        repeat(enemiesCount) {
+            val randomIndex = random.nextInt(emptyPoints.size)
+            val strategy =
+                when(random.nextInt(3)) {
+                    0 -> PassiveStrategy()
+                    1 -> PassiveAggressiveStrategy()
+                    else -> AggressiveStrategy()
+                }
+            context.addObject(Enemy(strategy), emptyPoints[randomIndex].flip())
+            field[emptyPoints[randomIndex].x][emptyPoints[randomIndex].y] = 0
+            emptyPoints.removeAt(randomIndex)
+        }
+    }
+
+    private fun getEmptyPoints(): List<Point> {
+        val emptyPoints = mutableListOf<Point>()
+        for (i in (1 until levelHeight)) {
+            for (j in (1 until levelWidth)) {
+                if (field[i][j] == 1) {
+                    emptyPoints.add(Point(i, j))
+                }
+            }
+        }
+        return emptyPoints
     }
 
     private fun createDoors(context: Context) {
@@ -107,14 +138,7 @@ class LevelProducer {
     }
 
     private fun createPlayer(context: Context) {
-        val emptyPoints = mutableListOf<Point>()
-        for (i in (1 until levelHeight)) {
-            for (j in (1 until levelWidth)) {
-                if (field[i][j] == 1) {
-                    emptyPoints.add(Point(i, j))
-                }
-            }
-        }
+        val emptyPoints = getEmptyPoints()
         val randomUpIndex = random.nextInt(emptyPoints.size)
         val point = emptyPoints[randomUpIndex]
         context.addObject(Player(), point.flip())
@@ -122,18 +146,12 @@ class LevelProducer {
     }
 
     private fun createClews(context: Context) {
-        val emptyPoints = mutableListOf<Point>()
-        for (i in (1 until levelHeight)) {
-            for (j in (1 until levelWidth)) {
-                if (field[i][j] == 1) {
-                    emptyPoints.add(Point(i, j))
-                }
-            }
-        }
-        val randomCount = random.nextInt(emptyPoints.size / 2)
+        val emptyPoints = getEmptyPoints().toMutableList()
+        val randomCount = random.nextInt(clewCount)
         repeat(randomCount) {
             val randomIndex = random.nextInt(emptyPoints.size)
             context.addObject(Clew(), emptyPoints[randomIndex].flip())
+            field[emptyPoints[randomIndex].x][emptyPoints[randomIndex].y] = 0
             emptyPoints.removeAt(randomIndex)
         }
     }

@@ -1,13 +1,20 @@
 package data
 
 import kotlin.Unit
+import kotlin.math.abs
 import kotlin.properties.Delegates
 import kotlin.reflect.KClass
+
+data class Point(val x: Int, val y: Int) {
+    fun dist(p: Point): Int {
+        return abs(p.x - x) + abs(p.y - y)
+    }
+}
 
 class Context(val height: Int, val width: Int) {
     private val objects = mutableMapOf<Point, MutableList<GameObject>>()
     private var runnableReaction : (Map<Point, List<GameObject>>) -> Unit = {}
-    private var stepsCount : Int by Delegates.observable(0) { _, _, _ ->
+    var stepsCount : Int by Delegates.observable(0) { _, _, _ ->
         runnableReaction.invoke(getMap())
     }
 
@@ -20,11 +27,27 @@ class Context(val height: Int, val width: Int) {
         stepsCount++
     }
 
-    fun moveObject(type: KClass<out GameObject>, from: Point, to: Point) {
-        val currentObject = (objects[from] ?: return).singleOrNull { type.isInstance(it) } ?: return
+    fun moveObject(gameObject: GameObject, from: Point, to: Point) {
+        if (!isPointInField(to) || !validMove(gameObject, to)) {
+            return
+        }
+
+        val currentObject = (objects[from] ?: return).singleOrNull { it == gameObject } ?: return
         objects[from]?.remove(currentObject)
         objects.getOrPut(to, { mutableListOf()}).add(currentObject)
         stepsCount++
+    }
+
+    private fun validMove(gameObject: GameObject, p: Point): Boolean {
+        return if (gameObject is Player) {
+            !isWall(p) && !containsClass(Enemy::class, p)
+        } else {
+            !isEmpty(p)
+        }
+    }
+
+    private fun isPointInField(p: Point): Boolean {
+        return !(p.x >= width || p.x < 0 || p.y < 0 || p.y >= height)
     }
 
     fun addObject(gameObject: GameObject, p: Point) {
@@ -52,8 +75,8 @@ class Context(val height: Int, val width: Int) {
         }.singleOrNull()
     }
 
-    private fun getTypeObjectAt(type: KClass<out GameObject>, p: Point): GameObject? {
-        return getObjectsAt(p)?.singleOrNull { type.isInstance(type) }
+    fun getTypeObjectAt(type: KClass<out GameObject>, p: Point): GameObject? {
+        return getObjectsAt(p)?.singleOrNull { type.isInstance(it) }
     }
 
     fun getPlayer(): Player? {
@@ -68,6 +91,18 @@ class Context(val height: Int, val width: Int) {
     fun isWall(p: Point): Boolean {
         return containsClass(Wall::class, p)
     }
-}
 
-data class Point(val x: Int, val y: Int)
+    private fun isEmpty(p: Point): Boolean{
+        return objects[p]?.isEmpty() ?: true
+    }
+
+    fun getPointByObject(gameObject: GameObject): Point? {
+        return objects.mapNotNull { (p: Point, g: List<GameObject>) ->
+            if (g.any {it == gameObject}) {
+                p
+            } else {
+                null
+            }
+        }.singleOrNull()
+    }
+}
