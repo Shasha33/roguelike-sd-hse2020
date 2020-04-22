@@ -17,6 +17,7 @@ class PlayerEvent(private val queue: LinkedBlockingQueue<String>) : Event {
         if (element == "ItsTimeToStop") { // TODO: heh
             return EventResult(ExitCode.EXIT)
         }
+        val player = context.getPlayer() ?: return EventResult(ExitCode.EXIT)
         val playerPoint = context.getPlayerPoint() ?: return EventResult(ExitCode.EXIT)
         val newPoint = when(element) {
             "UP" -> Point(playerPoint.x, playerPoint.y - 1)
@@ -27,15 +28,14 @@ class PlayerEvent(private val queue: LinkedBlockingQueue<String>) : Event {
         }
 
         if (context.containsClass(Enemy::class, newPoint)) {
-            attack(context, newPoint)
+            attack(player, context, newPoint)
         } else if (!context.isWall(newPoint)) {
-            context.moveObject(Player::class, playerPoint, newPoint)
+            context.moveObject(player, playerPoint, newPoint)
         }
         return EventResult(ExitCode.CONTINUE)
     }
 
-    private fun attack(context: Context, enemyPoint: Point) {
-        val player = context.getPlayer() ?: return
+    private fun attack(player: Player, context: Context, enemyPoint: Point) {
         val enemy = context.getTypeObjectAt(Enemy::class, enemyPoint) as? Enemy ?: return
         enemy.damage(player.damageValue)
         context.stepsCount++

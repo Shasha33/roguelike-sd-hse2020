@@ -5,7 +5,7 @@ import event.EventResult
 import event.ExitCode
 import kotlin.math.abs
 
-class Enemy(val strategy: EnemyStrategy) : Unit() {
+class Enemy(var strategy: EnemyStrategy) : Unit() {
     override val strength = 5
     override var hp = 50
 }
@@ -20,7 +20,7 @@ class ContusedStrategy : EnemyStrategy {
             override fun apply(context: Context): EventResult {
                 val point = context.getPointByObject(unit) ?: return EventResult(ExitCode.EXIT, "No unit found on the map")
                 val (dx, dy) = listOf(1 to 0, 0 to 1, -1 to 0, 0 to -1).random()
-                context.moveObject(Enemy::class, point, Point(point.x + dx, point.y + dy))
+                context.moveObject(unit, point, Point(point.x + dx, point.y + dy))
                 return EventResult(ExitCode.CONTINUE)
             }
         }
@@ -57,7 +57,7 @@ class PassiveAggressiveStrategy : EnemyStrategy {
                 }
 
                 for (p in possibleMoves) {
-                    context.moveObject(Enemy::class, point, p)
+                    context.moveObject(unit, point, p)
                 }
 
                 return EventResult(ExitCode.CONTINUE)
@@ -84,7 +84,7 @@ class AggressiveStrategy : EnemyStrategy {
 
                 val possibleMoves = possibleMoves(point, player)
                 for (p in possibleMoves) {
-                    context.moveObject(Enemy::class, point, p)
+                    context.moveObject(unit, point, p)
                 }
 
                 return EventResult(ExitCode.CONTINUE)

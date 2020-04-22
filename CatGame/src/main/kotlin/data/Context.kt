@@ -1,10 +1,15 @@
 package data
 
 import kotlin.Unit
+import kotlin.math.abs
 import kotlin.properties.Delegates
 import kotlin.reflect.KClass
 
-data class Point(val x: Int, val y: Int)
+data class Point(val x: Int, val y: Int) {
+    fun dist(p: Point): Int {
+        return abs(p.x - x) + abs(p.y - y)
+    }
+}
 
 class Context(val height: Int, val width: Int) {
     private val objects = mutableMapOf<Point, MutableList<GameObject>>()
@@ -22,15 +27,23 @@ class Context(val height: Int, val width: Int) {
         stepsCount++
     }
 
-    fun moveObject(type: KClass<out GameObject>, from: Point, to: Point) {
-        if (!isPointInField(to) || !isEmpty(to)) {
+    fun moveObject(gameObject: GameObject, from: Point, to: Point) {
+        if (!isPointInField(to) || !validMove(gameObject, to)) {
             return
         }
 
-        val currentObject = (objects[from] ?: return).singleOrNull { type.isInstance(it) } ?: return
+        val currentObject = (objects[from] ?: return).singleOrNull { it == gameObject } ?: return
         objects[from]?.remove(currentObject)
         objects.getOrPut(to, { mutableListOf()}).add(currentObject)
         stepsCount++
+    }
+
+    private fun validMove(gameObject: GameObject, p: Point): Boolean {
+        return if (gameObject is Player) {
+            !isWall(p) && !containsClass(Enemy::class, p)
+        } else {
+            !isEmpty(p)
+        }
     }
 
     private fun isPointInField(p: Point): Boolean {
@@ -79,7 +92,7 @@ class Context(val height: Int, val width: Int) {
         return containsClass(Wall::class, p)
     }
 
-    fun isEmpty(p: Point): Boolean{
+    private fun isEmpty(p: Point): Boolean{
         return objects[p]?.isEmpty() ?: true
     }
 

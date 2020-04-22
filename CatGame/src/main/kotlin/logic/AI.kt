@@ -1,12 +1,27 @@
 package logic
 
+import data.AggressiveStrategy
 import data.Context
 import data.Enemy
+import data.PassiveStrategy
 import event.Event
 
 class AI {
     fun aiAction(context: Context): List<Event> {
-        val enemies = context.getMap().values.flatten().filterIsInstance<Enemy>()
-        return enemies.map { it.strategy.createTurn(context, it) }
+        val enemies = context.getMap().filter { it.value.any { gameObject ->  gameObject is Enemy} }
+        val player = context.getPlayerPoint()
+        for (enemy in enemies) {
+            val point = enemy.key
+            val gameObject = enemy.value.filterIsInstance<Enemy>().singleOrNull() ?: continue
+            if (player?.dist(point) ?: 0 < 4 && gameObject.strategy is PassiveStrategy) {
+                gameObject.strategy = AggressiveStrategy()
+            } else if (player?.dist(point) ?: 0 >= 4 && gameObject.strategy is AggressiveStrategy) {
+                gameObject.strategy = PassiveStrategy()
+            }
+        }
+
+        return enemies.flatMap {
+            it.value.filterIsInstance<Enemy>().map { enemy -> enemy.strategy.createTurn(context, enemy) }
+        }
     }
 }
