@@ -14,6 +14,19 @@ interface EnemyStrategy {
     fun createTurn(context: Context, unit: Unit): Event
 }
 
+class ContusedStrategy : EnemyStrategy {
+    override fun createTurn(context: Context, unit: Unit): Event {
+        return object : Event {
+            override fun apply(context: Context): EventResult {
+                val point = context.getPointByObject(unit) ?: return EventResult(ExitCode.EXIT, "No unit found on the map")
+                val (dx, dy) = listOf(1 to 0, 0 to 1, -1 to 0, 0 to -1).random()
+                context.moveObject(Enemy::class, point, Point(point.x + dx, point.y + dy))
+                return EventResult(ExitCode.CONTINUE)
+            }
+        }
+    }
+}
+
 class PassiveStrategy : EnemyStrategy {
     override fun createTurn(context: Context, unit: Unit): Event {
         return object : Event {
