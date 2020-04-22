@@ -61,7 +61,7 @@ class PassiveAggressiveStrategy : EnemyStrategy {
                 if (point.x < player.x) {
                        possibleMoves.add(Point(point.x - 1, point.y))
                 } else if (point.x > player.x) {
-                    possibleMoves.add(Point(point.x - 1, point.y))
+                    possibleMoves.add(Point(point.x + 1, point.y))
                 }
 
                 if (point.y < player.y) {
