@@ -3,6 +3,7 @@ package event
 import data.*
 import java.util.concurrent.LinkedBlockingQueue
 import java.util.concurrent.TimeUnit
+import kotlin.random.Random
 
 interface Event {
     fun apply(context: Context): EventResult
@@ -37,6 +38,12 @@ class PlayerEvent(private val queue: LinkedBlockingQueue<String>) : Event {
 
     private fun attack(player: Player, context: Context, enemyPoint: Point) {
         val enemy = context.getTypeObjectAt(Enemy::class, enemyPoint) as? Enemy ?: return
+
+        if (Random.nextInt(10) == 1) {
+            enemy.strategy = StrategyDecorator(enemy.strategy)
+            return
+        }
+
         enemy.damage(player.damageValue)
         context.stepsCount++
         player.damage(enemy.damageValue)

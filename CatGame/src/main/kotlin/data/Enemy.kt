@@ -14,6 +14,20 @@ interface EnemyStrategy {
     fun createTurn(context: Context, unit: Unit): Event
 }
 
+class StrategyDecorator(private val strategy: EnemyStrategy) : EnemyStrategy {
+    private val randomStrategy = ContusedStrategy()
+    private var confusedMoves = 5
+
+    override fun createTurn(context: Context, unit: Unit): Event {
+        return if (confusedMoves > 0) {
+            confusedMoves--
+            randomStrategy.createTurn(context, unit)
+        } else {
+            strategy.createTurn(context, unit)
+        }
+    }
+}
+
 class ContusedStrategy : EnemyStrategy {
     override fun createTurn(context: Context, unit: Unit): Event {
         return object : Event {
