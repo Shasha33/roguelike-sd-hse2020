@@ -67,8 +67,11 @@ class LevelBuilder(val w: Int, val h: Int) {
                 }
                 append("\n")
             }
-
-            append(" ".repeat(w/3) + "HP: $hp; Armor: $armor; AP: $pow; ")
+            if (hp != -1) {
+                append(" ".repeat(w / 3) + "HP: $hp; Armor: $armor; AP: $pow; ")
+            } else {
+                append(" ".repeat(w / 3) + "GAME OVER")
+            }
         }
     }
 }
