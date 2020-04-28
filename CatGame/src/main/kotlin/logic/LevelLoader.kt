@@ -35,9 +35,7 @@ class LevelLoader {
     private val json = Json(context = gameObjectModule + strategyModule)
 
     fun saveTo(context: Context, path: String = defaultSavePath) {
-        if (path != lastSavePath) {
-            lastSavePath = path
-        }
+        lastSavePath = path
         val jsonText = json.stringify(Context.serializer(), context)
         val file = File(path)
         if (!file.exists()) {
