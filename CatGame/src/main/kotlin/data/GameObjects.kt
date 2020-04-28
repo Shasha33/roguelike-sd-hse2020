@@ -59,18 +59,6 @@ interface Furniture : GameObject
 
 class Clew : Pickable
 
-abstract class Usable(val stats: Stats) : Pickable
-class Hat(bonus: Int): Usable(Stats(0, 0, bonus)) {
-    companion object {
-        val emptyHat = Hat(0)
-    }
-}
-class Sword(bonus: Int): Usable(Stats(0, bonus, 0)) {
-    companion object {
-        val emptySword = Sword(0)
-    }
-}
-
 class GameObjectSerializer : JsonSerializer<GameObject> {
     override fun serialize(src: GameObject?, typeOfSrc: Type?, context: JsonSerializationContext?): JsonElement {
         val jo = JsonObject()

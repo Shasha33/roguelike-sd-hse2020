@@ -152,8 +152,8 @@ class LevelProducer {
             val randomIndex = random.nextInt(emptyPoints.size)
             val bonus = random.nextInt() % 50
             val item = when(random.nextInt() % 5) {
-                0 -> Hat(bonus)
-                1 -> Sword(bonus)
+                0 -> HatBuilder().addBonus(bonus).build()
+                1 -> SwordBuilder().addBonus(bonus).build()
                 else -> Clew()
             }
             context.addObject(item, emptyPoints[randomIndex].flip())
