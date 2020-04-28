@@ -60,18 +60,14 @@ interface Furniture : GameObject
 class Clew : Pickable
 
 abstract class Usable(val stats: Stats) : Pickable
-class Hat(private val bonus: Int): Usable(Stats(0, 0, bonus)) {
+class Hat(bonus: Int): Usable(Stats(0, 0, bonus)) {
     companion object {
-        fun emptyHat(): Hat {
-            return Hat(0)
-        }
+        val emptyHat = Hat(0)
     }
 }
-class Sword(private val bonus: Int): Usable(Stats(0, bonus, 0)) {
+class Sword(bonus: Int): Usable(Stats(0, bonus, 0)) {
     companion object {
-        fun emptySword(): Sword {
-            return Sword(0)
-        }
+        val emptySword = Sword(0)
     }
 }
 

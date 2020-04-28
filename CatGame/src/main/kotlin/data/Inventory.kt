@@ -1,8 +1,8 @@
 package data
 
 class Inventory {
-    private var hat : Hat = Hat.emptyHat()
-    private var sword : Sword = Sword.emptySword()
+    private var hat : Hat = Hat.emptyHat
+    private var sword : Sword = Sword.emptySword
 
     val armorBonus : Int
         get() = hat.stats.armor + sword.stats.armor
@@ -10,7 +10,7 @@ class Inventory {
         get() = hat.stats.attack + sword.stats.attack
 
     fun addHat(newHat: Hat): Boolean {
-        if (hat.stats.armor > newHat.stats.armor) {
+        if (hat.stats > newHat.stats) {
             hat = newHat
             return true
         }
@@ -18,7 +18,7 @@ class Inventory {
     }
 
     fun addSword(newSword: Sword): Boolean {
-        if (sword.stats.attack > sword.stats.attack) {
+        if (sword.stats > sword.stats) {
             sword = newSword
             return true
         }
@@ -26,10 +26,10 @@ class Inventory {
     }
 
     fun dropHat() {
-        hat = Hat.emptyHat()
+        hat = Hat.emptyHat
     }
 
     fun dropSword() {
-        sword = Sword.emptySword()
+        sword = Sword.emptySword
     }
 }
