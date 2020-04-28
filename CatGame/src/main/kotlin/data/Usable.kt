@@ -5,6 +5,7 @@ import kotlin.random.Random
 
 @Serializable
 abstract class Usable(val stats: Stats) : Pickable
+
 @Serializable
 class Hat(val bonus: Int): Usable(Stats(0, 0, bonus)) {
     companion object {
