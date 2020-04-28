@@ -23,6 +23,10 @@ class Player : Unit {
             return if (isAlive()) stats.attack + inventory.attackBonus else 0
         }
 
+    val armorValue : Int
+        get() = inventory.armorBonus + stats.armor
+
+    //can be used for heal
     override fun damage(value: Int) {
         stats.hp -= value - inventory.armorBonus - stats.armor
     }
