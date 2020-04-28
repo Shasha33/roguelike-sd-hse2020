@@ -60,6 +60,9 @@ class MainController : Controller() {
                 when (exitCode) {
                     ExitCode.GO_DOWN, ExitCode.GO_UP -> context = gameManager.createLevel(Random.nextInt())
                     ExitCode.EXIT -> break@loop // you died
+                    ExitCode.GAME_OVER -> {
+                        gameManager.deleteSave()
+                    }
                     else -> println("AAA") //should not happen
                 }
             }

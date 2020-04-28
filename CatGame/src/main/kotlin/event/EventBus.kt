@@ -9,7 +9,7 @@ interface Event {
 class EventResult(val exitCode: ExitCode, val message: String = "")
 
 enum class ExitCode {
-    CONTINUE, GO_UP, GO_DOWN, EXIT
+    CONTINUE, GO_UP, GO_DOWN, EXIT, GAME_OVER
 }
 
 class EventBus {

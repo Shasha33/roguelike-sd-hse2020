@@ -54,7 +54,7 @@ class DieEvent : Event {
                 if (gameObject is Unit && !gameObject.isAlive()) {
                     context.removeObject(Unit::class, it.key)
                     if (gameObject is Player) {
-                        return EventResult(ExitCode.EXIT, "player is already dead")
+                        return EventResult(ExitCode.GAME_OVER, "player is already dead")
                     }
                 }
             }

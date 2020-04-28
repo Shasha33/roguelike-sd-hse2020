@@ -31,4 +31,8 @@ class GameManager {
         }
         return exitCode
     }
+
+    fun deleteSave() {
+        levelLoader.dropLastSave()
+    }
 }
