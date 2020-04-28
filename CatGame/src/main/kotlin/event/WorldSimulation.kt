@@ -33,8 +33,14 @@ class PickClewEvent : Event {
 
         when(pickable) {
             is Clew -> player.addClew()
-            is Hat -> player.pickHat(pickable)
-            is Sword -> player.pickSword(pickable)
+            is Hat -> {
+                val uselessItem = player.pickHat(pickable)
+                context.addObject(uselessItem, playerPoint)
+            }
+            is Sword -> {
+              val uselessItem = player.pickSword(pickable)
+                context.addObject(uselessItem, playerPoint)
+            }
         }
 
         return EventResult(ExitCode.CONTINUE)

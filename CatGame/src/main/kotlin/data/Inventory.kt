@@ -12,20 +12,22 @@ class Inventory {
     val attackBonus : Int
         get() = hat.stats.attack + sword.stats.attack
 
-    fun addHat(newHat: Hat): Boolean {
+    fun addHat(newHat: Hat): Hat {
         if (hat.stats > newHat.stats) {
+            val oldHat = hat
             hat = newHat
-            return true
+            return oldHat
         }
-        return false
+        return newHat
     }
 
-    fun addSword(newSword: Sword): Boolean {
-        if (sword.stats > sword.stats) {
+    fun addSword(newSword: Sword): Sword {
+        if (sword.stats > newSword.stats) {
+            val oldSword = sword
             sword = newSword
-            return true
+            return oldSword
         }
-        return false
+        return newSword
     }
 
     fun dropHat() {

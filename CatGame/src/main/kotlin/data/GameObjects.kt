@@ -1,6 +1,5 @@
 package data
 
-import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -12,11 +11,11 @@ class Player : Unit {
         stats.hp++
     }
 
-    fun pickHat(hat: Hat) {
-        inventory.addHat(hat)
+    fun pickHat(hat: Hat): Hat {
+        return inventory.addHat(hat)
     }
-    fun pickSword(sword: Sword) {
-        inventory.addSword(sword)
+    fun pickSword(sword: Sword): Sword {
+        return inventory.addSword(sword)
     }
 
     override val damageValue: Int
