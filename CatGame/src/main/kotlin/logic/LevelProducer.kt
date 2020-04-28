@@ -83,8 +83,8 @@ class LevelProducer {
             }
         }
 
-        createDoors(context)
         createPlayer(context)
+        createDoors(context)
         createPickableItems(context)
         createEnemies(context)
         return context
