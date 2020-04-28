@@ -22,11 +22,6 @@ class LevelView : View("Level") {
     private val fieldProperty = SimpleStringProperty(this, "field", render.drawContext(wSize, hSize, mapOf()))
     private var field by fieldProperty
 
-    init {
-        controller.runGame()
-        update(controller.getContext().getMap())
-    }
-
     override val root = vbox {
         useMaxSize = true
         primaryStage.height = hSize * 22.0

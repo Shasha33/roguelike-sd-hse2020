@@ -21,6 +21,7 @@ class MenuView : View("Main menu") {
             hgrow = Priority.ALWAYS
             useMaxSize = true
             action {
+                controller.startGame()
                 replaceWith<LevelView>()
             }
         }
@@ -34,7 +35,7 @@ class MenuView : View("Main menu") {
             }
             button("Load from file") {
                 action {
-                    controller.usePath = input.value
+                    controller.startGame(input.value)
                     replaceWith<LevelView>()
                 }
             }
