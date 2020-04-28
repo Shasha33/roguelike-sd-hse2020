@@ -4,6 +4,8 @@ import data.Context
 import event.ExitCode
 import event.PlayerEvent
 import logic.GameManager
+import logic.PlayerAction
+import logic.PlayerActions
 import tornadofx.Controller
 import views.LevelView
 import java.io.File
@@ -11,7 +13,7 @@ import java.util.concurrent.LinkedBlockingQueue
 import kotlin.random.Random
 
 class MainController : Controller() {
-    private val channel = LinkedBlockingQueue<String>()
+    private val channel = LinkedBlockingQueue<PlayerAction>()
     private val gameManager = GameManager()
     private var context: Context = Context(0, 0)
         set(newContext) {
@@ -23,7 +25,14 @@ class MainController : Controller() {
         }
 
     fun addToActionQueue(button: String) {
-        channel.add(button)
+        val action = when(button) {
+            "UP" -> PlayerActions(context).moveUp()
+            "DOWN" -> PlayerActions(context).moveDown()
+            "LEFT" -> PlayerActions(context).moveLeft()
+            "RIGHT" -> PlayerActions(context).moveRight()
+            else -> return
+        }
+        channel.add(action)
     }
 
     fun getContext(): Context {
@@ -35,7 +44,7 @@ class MainController : Controller() {
     }
 
     fun stopGame() {
-        channel.add("ItsTimeToStop")
+        channel.add(PlayerActions(context).stopGame())
     }
 
     fun startGame(path: String? = null) {
@@ -54,7 +63,6 @@ class MainController : Controller() {
                     else -> println("AAA") //should not happen
                 }
             }
-            println("Game Over")
         }
     }
 }

@@ -12,6 +12,10 @@ data class Point(val x: Int, val y: Int) {
     fun dist(p: Point): Int {
         return abs(p.x - x) + abs(p.y - y)
     }
+
+    fun add(p: Point): Point {
+        return Point(x + p.x, y + p.y)
+    }
 }
 
 @Serializable
