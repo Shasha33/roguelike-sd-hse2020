@@ -27,11 +27,16 @@ class NewLevelEvent : Event {
 class PickClewEvent : Event {
     override fun apply(context: Context): EventResult {
         val playerPoint = context.getPlayerPoint() ?: return EventResult(ExitCode.EXIT, "No player found on the map")
-        if (context.containsClass(Clew::class, playerPoint)) {
-            context.removeObject(Clew::class, playerPoint)
-            val player = context.getPlayer()
-            player?.addClew()
+        val pickable = context.getTypeObjectAt(Pickable::class, playerPoint) ?: return EventResult(ExitCode.CONTINUE)
+        context.removeObject(Pickable::class, playerPoint)
+        val player = context.getPlayer() ?: return EventResult(ExitCode.EXIT, "No player found on the map")
+
+        when(pickable) {
+            is Clew -> player.addClew()
+            is Hat -> player.pickHat(pickable)
+            is Sword -> player.pickSword(pickable)
         }
+
         return EventResult(ExitCode.CONTINUE)
     }
 }
