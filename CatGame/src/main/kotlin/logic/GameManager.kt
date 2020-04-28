@@ -13,7 +13,7 @@ class GameManager {
         return levelProducer.create(seed)
     }
 
-    fun createLevel(path: String): Context {
+    fun createLevel(path: String): Context? {
         return levelLoader.loadFrom(path)
     }
 
@@ -23,6 +23,8 @@ class GameManager {
         val exitCode = gameLoop.run()
         if (exitCode != ExitCode.EXIT) {
             levelLoader.nextLevel(context)
+        } else {
+            levelLoader.dropLastSave()
         }
         return exitCode
     }

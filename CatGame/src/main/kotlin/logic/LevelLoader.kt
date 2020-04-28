@@ -34,8 +34,12 @@ class LevelLoader {
         file.writeText(jsonText)
     }
 
-    fun loadFrom(path: String): Context {
-        val text = File(path).readText()
+    fun loadFrom(path: String): Context? {
+        val file = File(path)
+        if (!file.exists() || !file.canRead()) {
+            return null
+        }
+        val text = file.readText()
         return gson.fromJson(text, Context::class.java)
     }
 
@@ -43,7 +47,11 @@ class LevelLoader {
         saveTo(context, lastSavePath)
     }
 
-    fun getSavedLevel(): Context {
+    fun getSavedLevel(): Context? {
         return loadFrom(lastSavePath)
+    }
+
+    fun dropLastSave() {
+        File(lastSavePath).delete()
     }
 }
