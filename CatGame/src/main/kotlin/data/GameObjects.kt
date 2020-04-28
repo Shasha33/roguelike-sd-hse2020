@@ -1,11 +1,9 @@
 package data
 
-import com.google.gson.JsonElement
-import com.google.gson.JsonObject
-import com.google.gson.JsonSerializationContext
-import com.google.gson.JsonSerializer
-import java.lang.reflect.Type
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 class Player : Unit {
     override val stats = Stats(100, 10, 0 )
     private val inventory = Inventory()
@@ -30,9 +28,11 @@ class Player : Unit {
         stats.hp -= value - inventory.armorBonus - stats.armor
     }
 }
-
+@Serializable
 class DoorUp : Furniture
+@Serializable
 class DoorDown : Furniture
+@Serializable
 class Wall : Furniture
 
 interface GameObject
@@ -57,12 +57,5 @@ interface  Unit : GameObject {
 interface Pickable : GameObject
 interface Furniture : GameObject
 
+@Serializable
 class Clew : Pickable
-
-class GameObjectSerializer : JsonSerializer<GameObject> {
-    override fun serialize(src: GameObject?, typeOfSrc: Type?, context: JsonSerializationContext?): JsonElement {
-        val jo = JsonObject()
-        jo.addProperty("className", src?.javaClass?.name)
-        return jo
-    }
-}

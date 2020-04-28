@@ -3,6 +3,7 @@ package logic
 import data.Context
 import event.Event
 import event.ExitCode
+import java.io.File
 
 class GameManager {
     private val levelLoader = LevelLoader()
@@ -17,14 +18,16 @@ class GameManager {
         return levelLoader.loadFrom(path)
     }
 
+    fun saveGame(context: Context, path: String) {
+        levelLoader.saveTo(context, path)
+    }
+
     fun runLevel(context: Context, eventList: List<Event> = emptyList()): ExitCode {
 //        val gameLoop = gameFactory.createGame(context)
         val gameLoop = GameLoop(context, eventList)
         val exitCode = gameLoop.run()
         if (exitCode != ExitCode.EXIT) {
             levelLoader.nextLevel(context)
-        } else {
-            levelLoader.dropLastSave()
         }
         return exitCode
     }

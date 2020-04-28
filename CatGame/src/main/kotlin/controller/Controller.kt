@@ -11,7 +11,7 @@ import java.util.concurrent.LinkedBlockingQueue
 import kotlin.random.Random
 
 class MainController : Controller() {
-    var usePath: File? = null
+    var usePath: String? = null
     private val channel = LinkedBlockingQueue<String>()
     private val gameManager = GameManager()
     private var context = gameManager.createLevel(Random.nextInt())
@@ -24,8 +24,8 @@ class MainController : Controller() {
         return context
     }
 
-    fun saveContext(saveDir: File) {
-        TODO()
+    fun saveContext(saveDir: String) {
+        gameManager.saveGame(context, saveDir)
     }
 
     fun stopGame() {
@@ -33,7 +33,11 @@ class MainController : Controller() {
     }
 
     fun runGame() {
-        context = gameManager.createLevel(Random.nextInt())
+        context = if (usePath != null) {
+            gameManager.createLevel(usePath!!)!!
+        } else {
+            gameManager.createLevel(Random.nextInt())
+        }
         runAsync {
             context.addReaction {
                 //TODO call level update

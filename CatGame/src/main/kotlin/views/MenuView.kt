@@ -34,7 +34,7 @@ class MenuView : View("Main menu") {
             }
             button("Load from file") {
                 action {
-                    controller.usePath = File(input.value)
+                    controller.usePath = input.value
                     replaceWith<LevelView>()
                 }
             }

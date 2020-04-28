@@ -1,16 +1,18 @@
 package data
 
+import kotlinx.serialization.Serializable
 import kotlin.random.Random
 
-
+@Serializable
 abstract class Usable(val stats: Stats) : Pickable
-class Hat(bonus: Int): Usable(Stats(0, 0, bonus)) {
+@Serializable
+class Hat(val bonus: Int): Usable(Stats(0, 0, bonus)) {
     companion object {
         val emptyHat = Hat(0)
     }
 }
-
-class Sword(bonus: Int): Usable(Stats(0, bonus, 0)) {
+@Serializable
+class Sword(val bonus: Int): Usable(Stats(0, bonus, 0)) {
     companion object {
         val emptySword = Sword(0)
     }

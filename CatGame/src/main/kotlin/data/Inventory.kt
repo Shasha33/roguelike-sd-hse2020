@@ -1,5 +1,8 @@
 package data
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 class Inventory {
     private var hat : Hat = Hat.emptyHat
     private var sword : Sword = Sword.emptySword
