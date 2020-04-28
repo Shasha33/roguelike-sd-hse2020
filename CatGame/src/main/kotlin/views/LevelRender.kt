@@ -12,7 +12,9 @@ class LevelRender {
                 val sprite = loadSprite(obj)
                 builder.drawOn(point.x, point.y, sprite)
                 if (obj is Player) {
-                    builder.hp = obj.hp
+                    builder.hp = obj.stats.hp
+                    builder.armor = obj.armorValue
+                    builder.pow = obj.damageValue
                 }
             }
         }
@@ -30,6 +32,8 @@ class LevelRender {
             is DoorDown -> "ӿ"
             is Enemy -> "©"
             is Clew -> "@"
+            is Hat -> "H"
+            is Sword -> "S"
             else -> "X"
         }
 
@@ -38,6 +42,8 @@ class LevelRender {
 class LevelBuilder(val w: Int, val h: Int) {
     private val lines: List<MutableList<String>>
     var hp = -1
+    var armor = -1
+    var pow = -1
 
     init {
         val iniList = generateSequence { " " }.take(w).toList()
@@ -61,8 +67,11 @@ class LevelBuilder(val w: Int, val h: Int) {
                 }
                 append("\n")
             }
-
-            append(" ".repeat(w/2) + "HP: $hp")
+            if (hp != -1) {
+                append(" ".repeat(w / 3) + "HP: $hp; Armor: $armor; AP: $pow; ")
+            } else {
+                append(" ".repeat(w / 3) + "GAME OVER")
+            }
         }
     }
 }

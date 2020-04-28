@@ -83,9 +83,9 @@ class LevelProducer {
             }
         }
 
-        createDoors(context)
         createPlayer(context)
-        createClews(context)
+        createDoors(context)
+        createPickableItems(context)
         createEnemies(context)
         return context
     }
@@ -145,12 +145,18 @@ class LevelProducer {
         field[point.x][point.y] = 0
     }
 
-    private fun createClews(context: Context) {
+    private fun createPickableItems(context: Context) {
         val emptyPoints = getEmptyPoints().toMutableList()
         val randomCount = random.nextInt(clewCount)
         repeat(randomCount) {
             val randomIndex = random.nextInt(emptyPoints.size)
-            context.addObject(Clew(), emptyPoints[randomIndex].flip())
+            val bonus = random.nextInt(1, 50)
+            val item = when(random.nextInt() % 5) {
+                0 -> HatBuilder().addBonus(bonus).build()
+                1 -> SwordBuilder().addBonus(bonus).build()
+                else -> Clew()
+            }
+            context.addObject(item, emptyPoints[randomIndex].flip())
             field[emptyPoints[randomIndex].x][emptyPoints[randomIndex].y] = 0
             emptyPoints.removeAt(randomIndex)
         }

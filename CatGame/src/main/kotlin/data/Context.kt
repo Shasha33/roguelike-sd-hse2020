@@ -1,18 +1,27 @@
 package data
 
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.Transient
 import kotlin.Unit
 import kotlin.math.abs
 import kotlin.properties.Delegates
 import kotlin.reflect.KClass
 
+@Serializable
 data class Point(val x: Int, val y: Int) {
     fun dist(p: Point): Int {
         return abs(p.x - x) + abs(p.y - y)
     }
+
+    fun add(p: Point): Point {
+        return Point(x + p.x, y + p.y)
+    }
 }
 
+@Serializable
 class Context(val height: Int, val width: Int) {
     private val objects = mutableMapOf<Point, MutableList<GameObject>>()
+    @Transient
     private var runnableReaction : (Map<Point, List<GameObject>>) -> Unit = {}
     var stepsCount : Int by Delegates.observable(0) { _, _, _ ->
         runnableReaction.invoke(getMap())

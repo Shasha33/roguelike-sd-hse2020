@@ -4,28 +4,23 @@ import controller.MainController
 import data.GameObject
 import data.Point
 import javafx.beans.property.SimpleStringProperty
+import javafx.scene.input.KeyCode
 import javafx.scene.input.KeyEvent
 import javafx.scene.layout.GridPane
 import javafx.scene.paint.Color
 import tornadofx.*
 import java.awt.Font
+import java.io.File
 
 
 class LevelView : View("Level") {
     private val controller: MainController by inject()
     private val wSize = controller.getContext().width
     private val hSize = controller.getContext().height
-    private lateinit var gameRoot: GridPane
-
 
     private val render = LevelRender()
     private val fieldProperty = SimpleStringProperty(this, "field", render.drawContext(wSize, hSize, mapOf()))
     private var field by fieldProperty
-
-    init {
-        controller.runGame()
-        update(controller.getContext().getMap())
-    }
 
     override val root = vbox {
         useMaxSize = true
@@ -36,7 +31,11 @@ class LevelView : View("Level") {
         }
         keyboard {
             addEventHandler(KeyEvent.KEY_PRESSED) {
-                controller.addToActionQueue(it.code.name)
+                if (it.isControlDown && it.code == KeyCode.S) {
+                    controller.saveContext("save.json")
+                } else {
+                    controller.addToActionQueue(it.code.name)
+                }
             }
         }
         label {

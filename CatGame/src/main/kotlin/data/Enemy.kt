@@ -3,17 +3,17 @@ package data
 import event.Event
 import event.EventResult
 import event.ExitCode
+import kotlinx.serialization.Serializable
 import kotlin.math.abs
-
-class Enemy(var strategy: EnemyStrategy) : Unit() {
-    override val strength = 5
-    override var hp = 50
+@Serializable
+class Enemy(var strategy: EnemyStrategy) : Unit {
+    override val stats = Stats(50, 5, 0)
 }
 
 interface EnemyStrategy {
     fun createTurn(context: Context, unit: Unit): Event
 }
-
+@Serializable
 class StrategyDecorator(private val strategy: EnemyStrategy) : EnemyStrategy {
     private val randomStrategy = ContusedStrategy()
     private var confusedMoves = 5
@@ -27,7 +27,7 @@ class StrategyDecorator(private val strategy: EnemyStrategy) : EnemyStrategy {
         }
     }
 }
-
+@Serializable
 class ContusedStrategy : EnemyStrategy {
     override fun createTurn(context: Context, unit: Unit): Event {
         return object : Event {
@@ -40,7 +40,7 @@ class ContusedStrategy : EnemyStrategy {
         }
     }
 }
-
+@Serializable
 class PassiveStrategy : EnemyStrategy {
     override fun createTurn(context: Context, unit: Unit): Event {
         return object : Event {
@@ -50,7 +50,7 @@ class PassiveStrategy : EnemyStrategy {
         }
     }
 }
-
+@Serializable
 class PassiveAggressiveStrategy : EnemyStrategy {
     override fun createTurn(context: Context, unit: Unit): Event {
         return object : Event {
@@ -79,7 +79,7 @@ class PassiveAggressiveStrategy : EnemyStrategy {
         }
     }
 }
-
+@Serializable
 class AggressiveStrategy : EnemyStrategy {
     override fun createTurn(context: Context, unit: Unit): Event {
         return object : Event {

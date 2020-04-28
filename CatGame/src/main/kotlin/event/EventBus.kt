@@ -2,6 +2,16 @@ package event
 
 import data.Context
 
+interface Event {
+    fun apply(context: Context): EventResult
+}
+
+class EventResult(val exitCode: ExitCode, val message: String = "")
+
+enum class ExitCode {
+    CONTINUE, GO_UP, GO_DOWN, EXIT, GAME_OVER
+}
+
 class EventBus {
     private val events = mutableListOf<Event>()
 
