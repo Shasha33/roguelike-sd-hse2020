@@ -12,7 +12,7 @@ class LevelRender {
                 val sprite = loadSprite(obj)
                 builder.drawOn(point.x, point.y, sprite)
                 if (obj is Player) {
-                    builder.hp = obj.hp
+                    builder.hp = obj.stats.hp
                 }
             }
         }
