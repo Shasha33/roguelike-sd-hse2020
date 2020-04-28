@@ -20,6 +20,10 @@ class GameManager {
     fun runLevel(context: Context, eventList: List<Event> = emptyList()): ExitCode {
 //        val gameLoop = gameFactory.createGame(context)
         val gameLoop = GameLoop(context, eventList)
-        return gameLoop.run()
+        val exitCode = gameLoop.run()
+        if (exitCode != ExitCode.EXIT) {
+            levelLoader.nextLevel(context)
+        }
+        return exitCode
     }
 }
