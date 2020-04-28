@@ -83,8 +83,8 @@ class LevelProducer {
             }
         }
 
-        createDoors(context)
         createPlayer(context)
+        createDoors(context)
         createPickableItems(context)
         createEnemies(context)
         return context
@@ -150,7 +150,7 @@ class LevelProducer {
         val randomCount = random.nextInt(clewCount)
         repeat(randomCount) {
             val randomIndex = random.nextInt(emptyPoints.size)
-            val bonus = random.nextInt() % 50
+            val bonus = random.nextInt(1, 50)
             val item = when(random.nextInt() % 5) {
                 0 -> HatBuilder().addBonus(bonus).build()
                 1 -> SwordBuilder().addBonus(bonus).build()
