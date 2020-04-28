@@ -5,13 +5,6 @@ import java.util.concurrent.LinkedBlockingQueue
 import java.util.concurrent.TimeUnit
 import kotlin.random.Random
 
-interface Event {
-    fun apply(context: Context): EventResult
-}
-
-class EventResult(val exitCode: ExitCode, val message: String = "")
-
-
 class PlayerEvent(private val queue: LinkedBlockingQueue<String>) : Event {
     override fun apply(context: Context): EventResult {
         val element = queue.poll(1, TimeUnit.DAYS) ?: "null"
@@ -49,8 +42,4 @@ class PlayerEvent(private val queue: LinkedBlockingQueue<String>) : Event {
         player.damage(enemy.damageValue)
         context.stepsCount++
     }
-}
-
-enum class ExitCode {
-    CONTINUE, GO_UP, GO_DOWN, EXIT
 }
