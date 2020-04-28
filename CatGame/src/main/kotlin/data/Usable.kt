@@ -36,7 +36,7 @@ class HatBuilder(random: Random? = null) {
     }
 
     fun withRandomBonus(): HatBuilder {
-        hatBonus += random.nextInt() % 50
+        hatBonus += random.nextInt(1, 50)
         return this
     }
 }
@@ -58,7 +58,7 @@ class SwordBuilder(random: Random? = null) {
     }
 
     fun withRandomBonus(): SwordBuilder {
-        swordBonus += random.nextInt() % 50
+        swordBonus += random.nextInt(1, 50)
         return this
     }
 }
