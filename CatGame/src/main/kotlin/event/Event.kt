@@ -25,7 +25,7 @@ class PlayerEvent(private val queue: LinkedBlockingQueue<String>) : Event {
             "RIGHT" -> Point(playerPoint.x + 1, playerPoint.y)
             else -> return EventResult(ExitCode.CONTINUE)
         }
-        if (!context.isWall(newPoint)) {
+        if (!context.isWall(newPoint) && context.inField(newPoint)) {
             context.moveObject(Player::class, playerPoint, newPoint)
         }
         return EventResult(ExitCode.CONTINUE)

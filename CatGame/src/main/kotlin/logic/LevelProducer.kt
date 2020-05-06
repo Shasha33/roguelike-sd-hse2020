@@ -188,6 +188,10 @@ fun Point.flip(): Point {
     return Point(this.y, this.x)
 }
 
+fun Point.plus(other: Point): Point {
+    return Point(x + other.x, y + other.y)
+}
+
 //for testing
 fun main(args: Array<String>) {
     val levelProducer = LevelProducer()

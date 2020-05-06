@@ -7,7 +7,7 @@ import com.google.gson.JsonSerializer
 import java.lang.reflect.Type
 
 class Player : Unit {
-    private var cnt = 0
+    var cnt = 0
 
     fun addClew() {
         cnt++

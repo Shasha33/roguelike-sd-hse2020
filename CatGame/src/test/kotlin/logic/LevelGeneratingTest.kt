@@ -42,10 +42,6 @@ class LevelGeneratingTest : StringSpec({
         }
     }
 
-    fun Point.plus(other: Point): Point {
-        return Point(x + other.x, y + other.y)
-    }
-
     fun dfs(index: Int, used: Array<Boolean>, points: List<Point>, context: Context) {
         used[index] = true
         val point = points[index]

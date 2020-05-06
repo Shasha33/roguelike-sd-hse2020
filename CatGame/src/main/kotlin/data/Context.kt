@@ -68,6 +68,10 @@ class Context(val height: Int, val width: Int) {
     fun isWall(p: Point): Boolean {
         return containsClass(Wall::class, p)
     }
+
+    fun inField(p: Point): Boolean {
+        return (0 <= p.x) && (0 <= p.y) && (width > p.x) && (height > p.y)
+    }
 }
 
 data class Point(val x: Int, val y: Int)
