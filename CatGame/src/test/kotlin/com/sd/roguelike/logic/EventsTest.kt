@@ -1,7 +1,7 @@
-package logic
+package com.sd.roguelike.logic
 
-import data.*
-import event.*
+import com.sd.roguelike.data.*
+import com.sd.roguelike.event.*
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.shouldBe
 
@@ -42,8 +42,14 @@ class EventsTest : StringSpec({
 
     "open door up test" {
         val context = Context(10, 10)
-        context.addObject(Player(), Point(0, 0))
-        context.addObject(DoorUp(), Point(0, 0))
+        context.addObject(
+            Player(),
+            Point(0, 0)
+        )
+        context.addObject(
+            DoorUp(),
+            Point(0, 0)
+        )
 
         val result = NewLevelEvent().apply(context)
         result.exitCode shouldBe ExitCode.GO_UP
@@ -51,8 +57,14 @@ class EventsTest : StringSpec({
 
     "open door down test" {
         val context = Context(10, 10)
-        context.addObject(Player(), Point(0, 0))
-        context.addObject(DoorDown(), Point(0, 0))
+        context.addObject(
+            Player(),
+            Point(0, 0)
+        )
+        context.addObject(
+            DoorDown(),
+            Point(0, 0)
+        )
 
         val result = NewLevelEvent().apply(context)
         result.exitCode shouldBe ExitCode.GO_DOWN
@@ -78,7 +90,12 @@ class EventsTest : StringSpec({
         eventBus.addEvent(addEvent)
         eventBus.addEvent(decEvent)
 
-        eventBus.callAll(Context(10, 10)).exitCode shouldBe ExitCode.EXIT
+        eventBus.callAll(
+            Context(
+                10,
+                10
+            )
+        ).exitCode shouldBe ExitCode.EXIT
         cnt1 shouldBe 1
         cnt2 shouldBe -1
     }
@@ -103,7 +120,12 @@ class EventsTest : StringSpec({
         eventBus.addEvent(decEvent)
         eventBus.addEvent(addEvent)
 
-        eventBus.callAll(Context(10, 10)).exitCode shouldBe ExitCode.EXIT
+        eventBus.callAll(
+            Context(
+                10,
+                10
+            )
+        ).exitCode shouldBe ExitCode.EXIT
         cnt1 shouldBe 0
         cnt2 shouldBe -1
     }
@@ -121,7 +143,12 @@ class EventsTest : StringSpec({
         eventBus.addEvent(addEvent)
         eventBus.addEvent(addEvent)
 
-        eventBus.callAll(Context(10, 10)).exitCode shouldBe ExitCode.CONTINUE
+        eventBus.callAll(
+            Context(
+                10,
+                10
+            )
+        ).exitCode shouldBe ExitCode.CONTINUE
         cnt shouldBe 2
     }
 })

@@ -1,8 +1,8 @@
-package views
+package com.sd.roguelike.views
 
-import controller.MainController
-import data.GameObject
-import data.Point
+import com.sd.roguelike.controller.MainController
+import com.sd.roguelike.data.GameObject
+import com.sd.roguelike.data.Point
 import javafx.beans.property.SimpleStringProperty
 import javafx.scene.input.KeyEvent
 import javafx.scene.layout.GridPane

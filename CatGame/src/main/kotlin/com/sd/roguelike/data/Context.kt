@@ -1,21 +1,20 @@
-package data
+package com.sd.roguelike.data
 
-import kotlin.Unit
 import kotlin.properties.Delegates
 import kotlin.reflect.KClass
 
 class Context(val height: Int, val width: Int) {
     private val objects = mutableMapOf<Point, MutableList<GameObject>>()
-    private var runnableReaction : (Map<Point, List<GameObject>>) -> Unit = {}
-    private var stepsCount : Int by Delegates.observable(0) { _, _, _ ->
+    private var runnableReaction: (Map<Point, List<GameObject>>) -> Any = {}
+    private var stepsCount: Int by Delegates.observable(0) { _, _, _ ->
         runnableReaction.invoke(getMap())
     }
 
-    fun getMap() : Map<Point, List<GameObject>> {
+    fun getMap(): Map<Point, List<GameObject>> {
         return HashMap(objects)
     }
 
-    fun addReaction(reaction: (Map<Point, List<GameObject>>) -> Unit) {
+    fun addReaction(reaction: (Map<Point, List<GameObject>>) -> Any) {
         runnableReaction = reaction
         stepsCount++
     }
@@ -23,7 +22,7 @@ class Context(val height: Int, val width: Int) {
     fun moveObject(type: KClass<out GameObject>, from: Point, to: Point) {
         val currentObject = (objects[from] ?: return).singleOrNull { type.isInstance(it) } ?: return
         objects[from]?.remove(currentObject)
-        objects.getOrPut(to, { mutableListOf()}).add(currentObject)
+        objects.getOrPut(to, { mutableListOf() }).add(currentObject)
         stepsCount++
     }
 
@@ -44,7 +43,7 @@ class Context(val height: Int, val width: Int) {
 
     fun getPlayerPoint(): Point? {
         return objects.mapNotNull { (p: Point, g: List<GameObject>) ->
-            if (g.any {it is Player}) {
+            if (g.any { it is Player }) {
                 p
             } else {
                 null

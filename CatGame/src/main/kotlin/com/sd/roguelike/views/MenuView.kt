@@ -1,9 +1,8 @@
-package views
+package com.sd.roguelike.views
 
-import controller.MainController
+import com.sd.roguelike.controller.MainController
 import javafx.beans.property.SimpleStringProperty
 import javafx.scene.layout.Priority
-import javafx.scene.paint.Color
 
 import tornadofx.*
 import java.io.File

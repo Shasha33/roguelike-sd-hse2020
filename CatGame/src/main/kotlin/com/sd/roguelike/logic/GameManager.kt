@@ -1,10 +1,10 @@
-package logic
+package com.sd.roguelike.logic
 
-import data.Context
-import event.Event
-import event.EventBus
-import event.ExitCode
-import event.WorldSimulation
+import com.sd.roguelike.data.Context
+import com.sd.roguelike.event.Event
+import com.sd.roguelike.event.EventBus
+import com.sd.roguelike.event.ExitCode
+import com.sd.roguelike.event.WorldSimulation
 
 class GameManager {
     private val levelLoader = LevelLoader()

@@ -1,6 +1,6 @@
-package logic
+package com.sd.roguelike.logic
 
-import data.*
+import com.sd.roguelike.data.*
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.collections.shouldHaveAtLeastSize
 import io.kotest.matchers.collections.shouldHaveSize
@@ -45,7 +45,12 @@ class LevelGeneratingTest : StringSpec({
     fun dfs(index: Int, used: Array<Boolean>, points: List<Point>, context: Context) {
         used[index] = true
         val point = points[index]
-        val deltas = listOf(Point(1, 0), Point(0, 1), Point(-1, 0), Point(0, -1))
+        val deltas = listOf(
+            Point(1, 0),
+            Point(0, 1),
+            Point(-1, 0),
+            Point(0, -1)
+        )
         val neighbours = deltas.map{ it.plus(point) }.map { points.indexOf(it) }.filter { it >= 0 }
         for (u in neighbours) {
             if (!used[u]) {

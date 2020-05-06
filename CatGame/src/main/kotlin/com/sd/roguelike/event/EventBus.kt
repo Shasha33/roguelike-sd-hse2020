@@ -1,6 +1,6 @@
-package event
+package com.sd.roguelike.event
 
-import data.Context
+import com.sd.roguelike.data.Context
 
 class EventBus {
     private val events = mutableListOf<Event>()

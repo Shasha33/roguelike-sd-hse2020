@@ -1,6 +1,6 @@
-package logic
+package com.sd.roguelike.logic
 
-import data.*
+import com.sd.roguelike.data.*
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.collections.shouldHaveSize
@@ -11,7 +11,7 @@ class ContextTest : StringSpec({
     "move object test" {
         val context = Context(10, 10)
         val point = Point(1, 1)
-        val newPoint = point.plus(Point(1 ,0))
+        val newPoint = point.plus(Point(1, 0))
         context.addObject(Clew(), point)
 
         context.moveObject(Clew::class, point, newPoint)
@@ -25,7 +25,7 @@ class ContextTest : StringSpec({
         val context = Context(10, 10)
         val truePoint = Point(0, 0)
         val point = Point(1, 1)
-        val newPoint = point.plus(Point(1 ,0))
+        val newPoint = point.plus(Point(1, 0))
         val clew = Clew()
         context.addObject(clew, truePoint)
 
@@ -54,7 +54,13 @@ class ContextTest : StringSpec({
         val clew = Clew()
         context.addObject(clew, point)
 
-        context.removeObject(Clew::class, point.plus(Point(1, 1)))
+        context.removeObject(
+            Clew::class, point.plus(
+                Point(
+                    1,
+                    1
+                )
+            ))
         val map = context.getMap()
         map.filterValues { it.isNotEmpty() } shouldHaveSize 1
         map[point] shouldContainExactly listOf(clew)
@@ -62,7 +68,7 @@ class ContextTest : StringSpec({
 
     "is wall point positive test" {
         val context = Context(10, 10)
-        val point = Point(1,1)
+        val point = Point(1, 1)
         context.addObject(Wall(), point)
 
         context.isWall(point) shouldBe true
@@ -70,7 +76,7 @@ class ContextTest : StringSpec({
 
     "is wall point negative test" {
         val context = Context(10, 10)
-        val point = Point(1,1)
+        val point = Point(1, 1)
 
         context.isWall(point) shouldBe false
     }

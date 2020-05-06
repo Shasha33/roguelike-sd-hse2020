@@ -1,6 +1,6 @@
-package logic
+package com.sd.roguelike.logic
 
-import data.*
+import com.sd.roguelike.data.*
 import java.lang.Integer.min
 import kotlin.random.Random
 
@@ -9,10 +9,10 @@ class LevelProducer {
     private val levelWidth = 100
 
     private lateinit var random: Random
-    private var field = Array(levelHeight) {Array(levelWidth) {0} }
+    private var field = Array(levelHeight) { Array(levelWidth) { 0 } }
 
     fun create(seed: Int): Context {
-        field = Array(levelHeight) {Array(levelWidth) {0} }
+        field = Array(levelHeight) { Array(levelWidth) { 0 } }
         random = Random(seed)
 
         val roomsNumber = random.nextInt(2, 10)
@@ -76,7 +76,10 @@ class LevelProducer {
         for (i in (0 until levelHeight)) {
             for (j in (0 until levelWidth)) {
                 if (field[i][j] == 0) {
-                    context.addObject(Wall(), Point(j, i))
+                    context.addObject(
+                        Wall(),
+                        Point(j, i)
+                    )
                 }
             }
         }
@@ -161,8 +164,8 @@ class LevelProducer {
         val startPoint = walls[index]
 
 
-        val maxHeight = min(levelHeight/2, levelHeight - startPoint.x - 1)
-        val maxWidth = min(levelWidth/2, levelWidth - startPoint.y - 1)
+        val maxHeight = min(levelHeight / 2, levelHeight - startPoint.x - 1)
+        val maxWidth = min(levelWidth / 2, levelWidth - startPoint.y - 1)
 
         if (maxHeight <= 1 || maxWidth <= 1) {
             return createRoom()
@@ -176,7 +179,7 @@ class LevelProducer {
 
         for (i in (0 until height)) {
             for (j in (0 until width)) {
-                field[startPoint.x +  i][startPoint.y + j] = 1
+                field[startPoint.x + i][startPoint.y + j] = 1
             }
         }
 

@@ -1,9 +1,9 @@
-import controller.MainController
+package com.sd.roguelike
+
+import com.sd.roguelike.controller.MainController
 import javafx.stage.Stage
 import tornadofx.*
-import tornadofx.View
-import views.LevelView
-import views.MenuView
+import com.sd.roguelike.views.MenuView
 
 
 class MyApp: App(MenuView::class) {

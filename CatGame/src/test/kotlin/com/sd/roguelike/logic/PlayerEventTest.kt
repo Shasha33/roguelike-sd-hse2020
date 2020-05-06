@@ -1,11 +1,11 @@
-package logic
+package com.sd.roguelike.logic
 
-import data.Context
-import data.Player
-import data.Point
-import data.Wall
-import event.ExitCode
-import event.PlayerEvent
+import com.sd.roguelike.data.Context
+import com.sd.roguelike.data.Player
+import com.sd.roguelike.data.Point
+import com.sd.roguelike.data.Wall
+import com.sd.roguelike.event.ExitCode
+import com.sd.roguelike.event.PlayerEvent
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
@@ -86,7 +86,13 @@ class PlayerEventTest : StringSpec({
         val context = Context(100, 100)
         val point = Point(50, 50)
         context.addObject(Player(), point)
-        context.addObject(Wall(), point.plus(Point(0, -1)))
+        context.addObject(
+            Wall(), point.plus(
+                Point(
+                    0,
+                    -1
+                )
+            ))
         queue.add("UP")
 
         val result = event.apply(context)
