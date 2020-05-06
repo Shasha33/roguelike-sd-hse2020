@@ -1,7 +1,6 @@
 package com.sd.roguelike.views
 
 import com.sd.roguelike.data.*
-import data.*
 
 class LevelRender {
 
