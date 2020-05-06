@@ -12,7 +12,9 @@ interface Event {
 
 class EventResult(val exitCode: ExitCode, val message: String = "")
 
-
+/**
+ * Event to process actions pressed by user
+ */
 class PlayerEvent(private val queue: LinkedBlockingQueue<String>) : Event {
     override fun apply(context: Context): EventResult {
         val element = queue.poll(1, TimeUnit.DAYS) ?: "null"

@@ -3,6 +3,10 @@ package com.sd.roguelike.data
 import kotlin.properties.Delegates
 import kotlin.reflect.KClass
 
+/**
+ * Class to wrap game field with useful methods.
+ * All methods expect only one object of a class in concrete point
+ */
 class Context(val height: Int, val width: Int) {
     private val objects = mutableMapOf<Point, MutableList<GameObject>>()
     private var runnableReaction: (Map<Point, List<GameObject>>) -> Any = {}

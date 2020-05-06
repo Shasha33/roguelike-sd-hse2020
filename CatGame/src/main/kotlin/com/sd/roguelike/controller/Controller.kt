@@ -10,16 +10,25 @@ import java.io.File
 import java.util.concurrent.LinkedBlockingQueue
 import kotlin.random.Random
 
+/**
+ * Auto generated class for ui and logic classes interaction
+ */
 class MainController : Controller() {
     var usePath: File? = null
     private val channel = LinkedBlockingQueue<String>()
     private val gameManager = GameManager()
     private var context = gameManager.createLevel(Random.nextInt())
 
+    /**
+     * adds pressed button
+     */
     fun addToActionQueue(button: String) {
         channel.add(button)
     }
 
+    /**
+     * returns the current map wrapped to Context class
+     */
     fun getContext(): Context {
         return context
     }
@@ -54,13 +63,3 @@ class MainController : Controller() {
         }
     }
 }
-
-//class ContextModel(ctx: Context) : ItemViewModel<Context>(ctx) {
-//    val name = bind(Person::nameProperty)
-//    val title = bind(Person::titleProperty)
-//}
-//
-//class ContextProp(ctx: ObservableMap<Point, GameObject>?) {
-//    val prop = SimpleMapProperty<Point, GameObject>(this, "ctx", ctx)
-//
-//}
