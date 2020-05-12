@@ -6,7 +6,7 @@ package ru.hse.kek;
 service Kek {
   rpc SessionsList(NyanMessage) returns (stream Session);
   rpc AddToSession(Session) returns (PlayerId);
-  rpc MakeTurn(PlayerId) returns (ContextState);
+  rpc MakeTurn(PlayerTurn) returns (ContextState);
   rpc UpdateMap(PlayerId) returns (ContextState);
   rpc Disconnect(PlayerId) returns (NyanMessage);
   rpc CreateSession(SessionInitInfo) returns (Session);
@@ -23,6 +23,11 @@ message Session {
 message PlayerId {
   int32 number = 1;
   Session session = 2;
+}
+
+message PlayerTurn {
+  PlayerId player = 1;
+  string button = 2;
 }
 
 message ContextState {
