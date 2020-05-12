@@ -13,7 +13,7 @@ class CreateGame : View("Create game") {
     val controller: MainController by inject()
     val input = SimpleStringProperty()
 
-    override val root = vbox {
+    override val root = hbox {
         button("Random") {
             hgrow = Priority.ALWAYS
             useMaxSize = true

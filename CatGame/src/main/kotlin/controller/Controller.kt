@@ -7,6 +7,7 @@ import logic.GameManager
 import logic.PlayerAction
 import logic.PlayerActions
 import tornadofx.Controller
+import views.LevelView
 import java.util.concurrent.LinkedBlockingQueue
 
 class MainController(customGameManager: GameManager? = null) : Controller() {
@@ -39,6 +40,7 @@ class MainController(customGameManager: GameManager? = null) : Controller() {
 
     fun startGame(path: String? = null) {
         gameManager.generateNewLevel(path)
+        tornadofx.runLater { find<LevelView>().update(gameManager.context.getMap()) }
         runAsync {
             loop@ while (true) {
                 val exitCode = gameManager.runLevel(listOf(PlayerEvent(channel)))
