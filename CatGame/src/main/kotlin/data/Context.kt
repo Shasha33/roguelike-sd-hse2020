@@ -5,6 +5,7 @@ import kotlinx.serialization.Transient
 import kotlin.Unit
 import kotlin.math.abs
 import kotlin.properties.Delegates
+import kotlin.random.Random
 import kotlin.reflect.KClass
 
 @Serializable
@@ -59,6 +60,23 @@ class Context(val height: Int, val width: Int) {
         return !(p.x >= width || p.x < 0 || p.y < 0 || p.y >= height)
     }
 
+    fun getRandomEmptyPoint(): Point? {
+        val emptyPoints = mutableListOf<Point>()
+        for (x in (0 until height)) {
+            for (y in (0 until width)) {
+                val point = Point(x, y)
+                if (isEmpty(point)) {
+                    emptyPoints.add(Point(x, y))
+                }
+            }
+        }
+        if (emptyPoints.isEmpty()) {
+            return null
+        }
+        val index = Random.nextInt(0, emptyPoints.size)
+        return emptyPoints[index]
+    }
+
     fun addObject(gameObject: GameObject, p: Point) {
         objects.getOrPut(p) { mutableListOf() }.add(gameObject)
         stepsCount++
@@ -74,9 +92,9 @@ class Context(val height: Int, val width: Int) {
         return objects[p]
     }
 
-    fun getPlayerPoint(): Point? {
+    fun getPlayerPoint(playerId: Int = 0): Point? {
         return objects.mapNotNull { (p: Point, g: List<GameObject>) ->
-            if (g.any {it is Player}) {
+            if (g.any {it is Player && it.id == playerId}) {
                 p
             } else {
                 null
@@ -88,8 +106,8 @@ class Context(val height: Int, val width: Int) {
         return getObjectsAt(p)?.singleOrNull { type.isInstance(it) }
     }
 
-    fun getPlayer(): Player? {
-        val playerPoint = getPlayerPoint() ?: return null
+    fun getPlayer(playerId: Int = 0): Player? {
+        val playerPoint = getPlayerPoint(playerId) ?: return null
         return getTypeObjectAt(Player::class, playerPoint) as? Player
     }
 

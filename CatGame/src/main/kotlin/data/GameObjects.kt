@@ -3,7 +3,9 @@ package data
 import kotlinx.serialization.Serializable
 
 @Serializable
-class Player : Unit {
+class Player(val id : Int = 0, private val dieCallback: () -> kotlin.Unit) : Unit {
+    constructor(id : Int = 0) : this(id, {})
+
     override val stats = Stats(100, 10, 0 )
     private val inventory = Inventory()
 
@@ -29,6 +31,10 @@ class Player : Unit {
     //can be used for heal
     override fun damage(value: Int) {
         stats.hp -= value - inventory.armorBonus - stats.armor
+    }
+
+    fun onDie() {
+        dieCallback()
     }
 }
 @Serializable

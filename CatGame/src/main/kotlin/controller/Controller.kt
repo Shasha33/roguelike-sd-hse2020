@@ -1,6 +1,8 @@
 package controller
 
 import data.Context
+import data.GameObject
+import data.Point
 import event.ExitCode
 import event.PlayerEvent
 import logic.GameManager
@@ -12,10 +14,10 @@ import java.io.File
 import java.util.concurrent.LinkedBlockingQueue
 import kotlin.random.Random
 
-class MainController : Controller() {
+class MainController(createdContext: Context? = null) : Controller() {
     private val channel = LinkedBlockingQueue<PlayerAction>()
     private val gameManager = GameManager()
-    private var context: Context = Context(0, 0)
+    private var context: Context = createdContext ?: Context(0, 0)
         set(newContext) {
             newContext.addReaction {
                 //TODO call level update
@@ -24,12 +26,12 @@ class MainController : Controller() {
             field = newContext
         }
 
-    fun addToActionQueue(button: String) {
+    fun addToActionQueue(button: String, playerId : Int = 0) {
         val action = when(button) {
-            "UP" -> PlayerActions(context).moveUp()
-            "DOWN" -> PlayerActions(context).moveDown()
-            "LEFT" -> PlayerActions(context).moveLeft()
-            "RIGHT" -> PlayerActions(context).moveRight()
+            "UP" -> PlayerActions(context, playerId).moveUp()
+            "DOWN" -> PlayerActions(context, playerId).moveDown()
+            "LEFT" -> PlayerActions(context, playerId).moveLeft()
+            "RIGHT" -> PlayerActions(context, playerId).moveRight()
             else -> return
         }
         channel.add(action)
@@ -50,9 +52,16 @@ class MainController : Controller() {
     fun startGame(path: String? = null) {
         context = path?.let{ gameManager.createLevel(it)!! } ?: gameManager.createLevel(Random.nextInt())
 
-        context.addReaction {
+        run() {
             //TODO call level update
             tornadofx.runLater { find<LevelView>().update(it) }
+        }
+    }
+
+    //to replace ui update with sending new state to all players
+    fun run(reaction: (Map<Point, List<GameObject>>) -> Unit) {
+        context.addReaction {
+            reaction(it)
         }
         runAsync {
             loop@ while (true) {

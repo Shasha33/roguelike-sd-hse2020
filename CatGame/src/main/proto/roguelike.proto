@@ -1,5 +1,8 @@
 syntax = "proto3";
 
+package ru.hse.grpc.proto;
+
+
 // TODO: better name
 service Kek {
   rpc SessionsList(NyanMessage) returns (stream Session);

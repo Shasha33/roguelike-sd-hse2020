@@ -11,10 +11,10 @@ open class PlayerAction(private val runnable: () -> EventResult) {
     }
 }
 
-class PlayerActions(private val context: Context) {
+class PlayerActions(private val context: Context, private val playerId: Int = 0) {
      private fun apply(delta: Point): EventResult {
-        val player = context.getPlayer() ?: return EventResult(ExitCode.EXIT)
-        val playerPoint = context.getPlayerPoint() ?: return EventResult(ExitCode.EXIT)
+        val player = context.getPlayer(playerId) ?: return EventResult(ExitCode.EXIT)
+        val playerPoint = context.getPlayerPoint(playerId) ?: return EventResult(ExitCode.EXIT)
         val newPoint = playerPoint.add(delta)
 
         if (context.containsClass(Enemy::class, newPoint)) {
