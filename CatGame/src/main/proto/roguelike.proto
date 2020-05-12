@@ -18,6 +18,7 @@ message NyanMessage {
 
 message Session {
   int32 id = 1;
+  string name = 2;
 }
 
 message PlayerId {
@@ -37,4 +38,5 @@ message ContextState {
 message SessionInitInfo {
   bool isRandom = 1;
   string path = 2;
+  string name = 3;
 }

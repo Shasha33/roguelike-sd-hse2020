@@ -17,9 +17,9 @@ class KekServer(private val port: Int) {
         server = ServerBuilder.forPort(port).addService(KekService()).build()
     }
 
-    fun addSession(): Int {
+    fun addSession(name: String): Int {
         val id = sessions.size
-        sessions.add(Session(id))
+        sessions.add(Session(id, name))
         return id
     }
 
@@ -37,7 +37,7 @@ class KekServer(private val port: Int) {
 
     private inner class KekService : KekGrpcKt.KekCoroutineImplBase() {
         override suspend fun createSession(request: Roguelike.SessionInitInfo): Roguelike.Session {
-            val sessionId = addSession()
+            val sessionId = addSession(request.name)
             return Roguelike.Session.newBuilder().apply {
                 id = sessionId
             }.build()
@@ -62,7 +62,10 @@ class KekServer(private val port: Int) {
 
         override fun sessionsList(request: Roguelike.NyanMessage): Flow<Roguelike.Session> {
             val messageText = request.text
-            return sessions.map { Roguelike.Session.newBuilder().setId(it.id).build() }.asFlow()
+            return sessions.map { Roguelike.Session.newBuilder().apply {
+                id = it.id
+                name = it.name
+            }.build() }.asFlow()
         }
 
         override suspend fun makeTurn(request: Roguelike.PlayerTurn): Roguelike.ContextState {

@@ -34,8 +34,11 @@ class Client(host: String, port: Int) {
         playerId
     }
 
-    fun createNewSessionAndConnect() = runBlocking {
-        val sessionInfo = Roguelike.SessionInitInfo.newBuilder().setIsRandom(true).build()
+    fun createNewSessionAndConnect(sessionName: String) = runBlocking {
+        val sessionInfo = Roguelike.SessionInitInfo.newBuilder().apply {
+            isRandom = true
+            name = sessionName
+        }.build()
         val session = stub.createSession(sessionInfo)
         playerId = stub.addToSession(session)
     }

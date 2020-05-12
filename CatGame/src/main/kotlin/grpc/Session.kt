@@ -9,7 +9,7 @@ import logic.GameManager
 import logic.LevelProducer
 import kotlin.random.Random
 
-class Session(val id : Int) {
+class Session(val id : Int, val name: String) {
     private val players = mutableListOf<Player>()
     private val levelProducer = LevelProducer()
     val context: Context
