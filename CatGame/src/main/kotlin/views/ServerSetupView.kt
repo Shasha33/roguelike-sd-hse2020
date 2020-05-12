@@ -8,35 +8,24 @@ import javafx.scene.paint.Color
 import tornadofx.*
 import java.io.File
 
-class MenuView : View("Main menu") {
+class ServerSetupView : View("Server setup") {
 
     val controller: MainController by inject()
-    val input = SimpleStringProperty()
+    val input = SimpleStringProperty("6969")
 
     override val root = hbox {
-        prefHeight = 210.0
-        prefWidth = 510.0
-
-        button("Random") {
-            hgrow = Priority.ALWAYS
-            useMaxSize = true
-            action {
-                controller.startGame()
-                replaceWith<LevelView>()
-            }
-        }
         form {
             hgrow = Priority.ALWAYS
             useMaxSize = true
             fieldset {
-                field("Path") {
+                field("Port") {
                     textfield(input)
                 }
             }
-            button("Load from file") {
+            button("Start server") {
                 action {
-                    controller.startGame(input.value)
-                    replaceWith<LevelView>()
+//                    controller.startServer(input.value)
+                    replaceWith<ServerLogView>()
                 }
             }
         }

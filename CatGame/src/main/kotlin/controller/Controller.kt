@@ -55,6 +55,13 @@ class MainController(customGameManager: GameManager? = null) : Controller() {
         }
     }
 
+    fun startServer(port: String) {
+        TODO("Not yet implemented")
+    }
+
+    fun connectTo(ip: String, port: String) {
+        TODO("Not yet implemented")
+    }
 }
 
 //class ContextModel(ctx: Context) : ItemViewModel<Context>(ctx) {
