@@ -8,6 +8,7 @@ import data.Point
 import io.grpc.Server
 import io.grpc.ServerBuilder
 import logic.LevelProducer
+import ru.hse.kek.KekGrpcKt
 
 class KekServer(private val port: Int) {
     private val sessions = mutableListOf<Session>()
@@ -26,6 +27,10 @@ class KekServer(private val port: Int) {
 
     fun addNewPlayerToSession(id: Int): Int {
         return sessions[id].addPlayer()
+    }
+
+    fun start() {
+
     }
 
     class KekService : KekGrpcKt.KekCoroutineImplBase() {
