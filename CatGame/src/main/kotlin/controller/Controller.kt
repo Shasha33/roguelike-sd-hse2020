@@ -65,6 +65,7 @@ class MainController(customGameManager: GameManager? = null) : Controller() {
 
     fun startGame(path: String? = null) {
         gameManager.generateNewLevel(path)
+        tornadofx.runLater { find<LevelView>().update(gameManager.context.getMap()) }
         runAsync {
             loop@ while (true) {
                 val exitCode = gameManager.runLevel(listOf(PlayerEvent(channel)))
