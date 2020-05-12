@@ -46,9 +46,9 @@ class MainController(customGameManager: GameManager? = null) : Controller() {
         server.close()
     }
 
-    suspend fun connectToServer(host: String, port: Int): List<Int> {
+    suspend fun connectToServer(host: String, port: Int): List<String> {
         clientWrapper = ClientWrapper(host, port)
-        return clientWrapper.client.getSessionsList().toList().map { it.id }
+        return clientWrapper.client.getSessionsList().toList().map { it.name }
     }
 
     fun startClientUpdateLoop() {
