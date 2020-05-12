@@ -10,10 +10,11 @@ service Kek {
   rpc MakeTurn(PlayerId) returns (ContextState);
   rpc UpdateMap(PlayerId) returns (ContextState);
   rpc Disconnect(PlayerId) returns (NyanMessage);
+  rpc CreateSession(SessionInitInfo) returns (Session);
 }
 
 message NyanMessage {
-  string name = 1;
+  string text = 1;
 }
 
 message Session {
@@ -27,4 +28,9 @@ message PlayerId {
 
 message ContextState {
   string serializedMap = 1;
+}
+
+message SessionInitInfo {
+  bool isRandom = 1;
+  string path = 2;
 }
