@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+// TODO: better name
+service Kek {
+  rpc SessionsList(NyanMessage) returns (stream Session);
+  rpc AddToSession(Session) returns (PlayerId);
+  rpc MakeTurn(PlayerId) returns (ContextState);
+  rpc UpdateMap(PlayerId) returns (ContextState);
+  rpc Disconnect(PlayerId) returns (NyanMessage);
+}
+
+message NyanMessage {
+  string name = 1;
+}
+
+message Session {
+  int32 id = 1;
+}
+
+message PlayerId {
+  int32 number = 1;
+  Session session = 2;
+}
+
+message ContextState {
+  string serializedMap = 1;
+}
