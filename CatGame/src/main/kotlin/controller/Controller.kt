@@ -46,10 +46,16 @@ class MainController(customGameManager: GameManager? = null) : Controller() {
         server.close()
     }
 
-//    fun connectToServer(host: String, port: Int) {
-//        clientWrapper = ClientWrapper(host, port)
-//        return clientWrapper.client.getSessionsList()
-//    }
+    suspend fun connectToServer(host: String, port: Int): List<Int> {
+        clientWrapper = ClientWrapper(host, port)
+        return clientWrapper.client.getSessionsList().toList().map { it.id }
+    }
+
+    fun startClientUpdateLoop() {
+        clientWrapper.startUILoop {
+            // update ui
+        }
+    }
 
     fun getContext(): Context {
         return gameManager.context

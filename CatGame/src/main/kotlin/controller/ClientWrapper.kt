@@ -2,6 +2,7 @@ package controller
 
 import data.Context
 import grpc.Client
+import ru.hse.kek.Roguelike
 import tornadofx.runAsync
 
 class ClientWrapper(host: String, port: Int) {
