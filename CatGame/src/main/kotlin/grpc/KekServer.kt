@@ -1,10 +1,5 @@
 package grpc
 
-import controller.MainController
-import data.Context
-import data.GameObject
-import data.Player
-import data.Point
 import io.grpc.Server
 import io.grpc.ServerBuilder
 import kotlinx.coroutines.flow.Flow
@@ -47,7 +42,7 @@ class KekServer(private val port: Int) {
         server.shutdown()
     }
 
-    inner class KekService : KekGrpcKt.KekCoroutineImplBase() {
+    private inner class KekService : KekGrpcKt.KekCoroutineImplBase() {
         override suspend fun createSession(request: Roguelike.SessionInitInfo): Roguelike.Session {
             val sessionId = addSession()
             return Roguelike.Session.newBuilder().apply {
@@ -93,35 +88,4 @@ class KekServer(private val port: Int) {
             return Roguelike.ContextState.newBuilder().setSerializedMap(packedContext).build()
         }
     }
-}
-
-class Session(val id : Int, val context: Context) {
-    private val players = mutableListOf<Player>()
-    private val gameController = MainController(context)
-
-    fun addPlayer(): Int {
-        val index = players.size
-        val player = Player(index) {
-            removePlayer(index)
-        }
-        players.add(player)
-        val point = context.getRandomEmptyPoint() ?: return -1
-        context.addObject(player, point)
-        return index
-    }
-
-    fun addPlayerMove(playerId: Int, button: String) {
-        gameController.addToActionQueue(button, playerId)
-    }
-
-    fun removePlayer(playerId: Int) {
-        val playerPoint = context.getPlayerPoint(playerId) ?: return
-        context.removeObject(Player::class, playerPoint)
-        players.removeAt(playerId)
-    }
-
-    fun start(reaction: (Map<Point, List<GameObject>>) -> Unit) {
-        gameController.run(reaction)
-    }
-
 }
