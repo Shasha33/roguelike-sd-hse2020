@@ -36,16 +36,29 @@ javafx {
     modules = javafxModules
 }
 
+
+ext.protobuf_version = "3.11.1"
+ext.grpc_version = "1.28.1" // CURRENT_GRPC_VERSION
+ext.grpc_kotlin_version = "0.1.1" // CURRENT_GRPC_KOTLIN_VERSION
+
 protobuf {
     protoc { artifact = "com.google.protobuf:protoc:3.11.1" }
     plugins {
+        // Specify protoc to generate using kotlin protobuf plugin
+        grpc {
+            artifact = "io.grpc:protoc-gen-grpc-java:$grpc_version"
+        }
+        // Specify protoc to generate using our grpc kotlin plugin
         grpckt {
-            artifact = "io.grpc:protoc-gen-grpc-kotlin:0.1.1"
+            artifact = "io.grpc:protoc-gen-grpc-kotlin:$grpc_kotlin_version"
         }
     }
     generateProtoTasks {
         all().each { task ->
             task.plugins {
+                // Generate Java gRPC classes
+                grpc { }
+                // Generate Kotlin gRPC using the custom plugin from library
                 grpckt { }
             }
         }
@@ -71,6 +84,7 @@ sourceSets {
     main {
         kotlin {
             srcDirs 'build/generated/source/proto/main/grpckt'
+            srcDirs 'build/generated/source/proto/main/grpc'
             srcDirs 'build/generated/source/proto/main/java'
         }
     }
