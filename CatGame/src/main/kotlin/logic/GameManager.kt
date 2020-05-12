@@ -49,6 +49,7 @@ open class GameManager {
     }
 
     fun runLevel(eventList: List<Event> = emptyList()): ExitCode {
+
         val gameLoop = GameLoop(context, eventList)
         val exitCode = gameLoop.run()
         if (exitCode != ExitCode.EXIT) {

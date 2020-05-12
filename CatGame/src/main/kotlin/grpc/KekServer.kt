@@ -12,6 +12,11 @@ class KekServer(private val port: Int) {
     private val sessions = mutableListOf<Session>()
     private val levelLoader = LevelLoader()
     private val server: Server
+    private var reaction : (List<Session>) -> Unit = {}
+
+    constructor(port: Int, stateChangeReaction: (List<Session>) -> Unit) : this(port) {
+        reaction = stateChangeReaction
+    }
 
     init {
         server = ServerBuilder.forPort(port).addService(KekService()).build()
@@ -20,6 +25,7 @@ class KekServer(private val port: Int) {
     fun addSession(name: String): Int {
         val id = sessions.size
         sessions.add(Session(id, name))
+        reaction(sessions)
         return id
     }
 
@@ -40,6 +46,7 @@ class KekServer(private val port: Int) {
             val sessionId = addSession(request.name)
             return Roguelike.Session.newBuilder().apply {
                 id = sessionId
+                name = request.name
             }.build()
         }
 

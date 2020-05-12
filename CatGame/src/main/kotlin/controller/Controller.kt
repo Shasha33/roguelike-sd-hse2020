@@ -3,16 +3,22 @@ package controller
 import data.Context
 import event.ExitCode
 import event.PlayerEvent
+import grpc.KekServer
+import kotlinx.coroutines.flow.toList
 import logic.GameManager
 import logic.PlayerAction
 import logic.PlayerActions
+import ru.hse.kek.Roguelike
 import tornadofx.Controller
+import java.util.concurrent.Flow
 import views.LevelView
 import java.util.concurrent.LinkedBlockingQueue
 
 class MainController(customGameManager: GameManager? = null) : Controller() {
     private val channel = LinkedBlockingQueue<PlayerAction>()
     private val gameManager = customGameManager ?: GameManager()
+    private lateinit var clientWrapper : ClientWrapper
+    private lateinit var server : KekServer
 
     fun addToActionQueue(button: String, playerId: Int = 0) {
         val context = getContext()
@@ -25,6 +31,25 @@ class MainController(customGameManager: GameManager? = null) : Controller() {
         }
         channel.add(action)
     }
+
+    fun runAsServer(port: Int) {
+        server = KekServer(port) {
+            for (session in it) {
+                println("session! ${session.name}")
+            }
+        }
+        server.start()
+        server.awaitTermination()
+    }
+
+    fun serverShutdown() {
+        server.close()
+    }
+
+//    fun connectToServer(host: String, port: Int) {
+//        clientWrapper = ClientWrapper(host, port)
+//        return clientWrapper.client.getSessionsList()
+//    }
 
     fun getContext(): Context {
         return gameManager.context
@@ -40,7 +65,6 @@ class MainController(customGameManager: GameManager? = null) : Controller() {
 
     fun startGame(path: String? = null) {
         gameManager.generateNewLevel(path)
-        tornadofx.runLater { find<LevelView>().update(gameManager.context.getMap()) }
         runAsync {
             loop@ while (true) {
                 val exitCode = gameManager.runLevel(listOf(PlayerEvent(channel)))
