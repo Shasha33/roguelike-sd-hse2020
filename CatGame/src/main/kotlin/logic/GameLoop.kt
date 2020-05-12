@@ -14,7 +14,6 @@ class GameLoop(private val context: Context, private val eventList : List<Event>
 
         var result = EventResult(ExitCode.CONTINUE)
         while (result.exitCode == ExitCode.CONTINUE) {
-            println("${context.height} ${context.getPlayer()?.stats?.hp}")
             result = eventBus.callAll(context)
             for (aiEvent in ai.aiAction(context)) {
                 if (result.exitCode == ExitCode.CONTINUE) {
