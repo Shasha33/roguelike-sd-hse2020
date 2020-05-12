@@ -25,7 +25,7 @@ class KekServer(private val port: Int) {
     }
 
     fun addNewPlayerToSession(id: Int): Int {
-        return sessions[id].
+        return sessions[id].addPlayer()
     }
 
     class KekService : KekGrpcKt.KekCoroutineImplBase() {
