@@ -36,7 +36,15 @@ class KekServer(private val port: Int) {
     }
 
     fun start() {
+        server.start()
+    }
 
+    fun awaitTermination() {
+        server.awaitTermination()
+    }
+
+    fun close() {
+        server.shutdown()
     }
 
     inner class KekService : KekGrpcKt.KekCoroutineImplBase() {
