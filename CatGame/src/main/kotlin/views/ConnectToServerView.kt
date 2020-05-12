@@ -26,7 +26,7 @@ class ConnectToServerView : View("Connect to server") {
             }
             button("Connect") {
                 action {
-//                    controller.connectTo(ipProp.value, portProp.value)
+                    controller.connectTo(ipProp.value, portProp.value)
                     replaceWith<GameListView>()
                 }
             }

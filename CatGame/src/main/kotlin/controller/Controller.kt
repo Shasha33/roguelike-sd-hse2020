@@ -34,17 +34,21 @@ class MainController(customGameManager: GameManager? = null) : Controller() {
     }
 
     fun runAsServer(port: Int) {
-        server = KekServer(port) {
-            for (session in it) {
-                println("session! ${session.name}")
+        runAsync {
+            server = KekServer(port) {
+                for (session in it) {
+                    println("session! ${session.name}")
+                }
             }
+            server.start()
+            server.awaitTermination()
         }
-        server.start()
-        server.awaitTermination()
     }
 
     fun serverShutdown() {
-        server.close()
+        if (this::server.isInitialized) {
+            server.close()
+        }
     }
 
     suspend fun connectToServer(host: String, port: Int): List<SessionInfo> {
@@ -101,13 +105,6 @@ class MainController(customGameManager: GameManager? = null) : Controller() {
         }
     }
 
-    fun startServer(port: String) {
-        TODO("Not yet implemented")
-    }
-
-    fun connectTo(ip: String, port: String) {
-        TODO("Not yet implemented")
-    }
 }
 
 data class SessionInfo(val id: Int, val name: String) {

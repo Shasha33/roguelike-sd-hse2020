@@ -14,6 +14,7 @@ class MyApp: App(ChooseMode::class) {
 
     override fun stop() {
         controller.stopGame()
+        controller.serverShutdown()
         super.stop()
     }
 }
