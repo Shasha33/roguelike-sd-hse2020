@@ -5,10 +5,16 @@ import data.Context
 import data.GameObject
 import data.Player
 import data.Point
+import logic.GameManager
+import logic.LevelProducer
+import kotlin.random.Random
 
-class Session(val id : Int, val context: Context) {
+class Session(val id : Int) {
     private val players = mutableListOf<Player>()
-    private val gameController = MainController(context)
+    private val levelProducer = LevelProducer()
+    val context: Context
+        get() = gameController.getContext()
+    private val gameController = MainController()
 
     fun addPlayer(): Int {
         val index = players.size
@@ -31,8 +37,23 @@ class Session(val id : Int, val context: Context) {
         players.removeAt(playerId)
     }
 
-    fun start(reaction: (Map<Point, List<GameObject>>) -> Unit) {
-        gameController.run(reaction)
+    fun start() {
+        gameController.startGame()
     }
 
+    inner class NetworkGameManager : GameManager() {
+        override fun getNewLevel(): Context? {
+            val context = levelProducer.create(Random.nextInt())
+            for (player in players) {
+                val newPoint = context.getRandomEmptyPoint() ?: return null
+                context.addObject(player, newPoint)
+            }
+            return context
+        }
+
+        override fun contextUpdateReaction(): (Map<Point, List<GameObject>>) -> Unit {
+            return {}
+        }
+
+    }
 }

@@ -5,13 +5,11 @@ import io.grpc.ServerBuilder
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.asFlow
 import logic.LevelLoader
-import logic.LevelProducer
 import ru.hse.kek.KekGrpcKt
 import ru.hse.kek.Roguelike
 
 class KekServer(private val port: Int) {
     private val sessions = mutableListOf<Session>()
-    private val levelProducer = LevelProducer()
     private val levelLoader = LevelLoader()
     private val server: Server
 
@@ -21,13 +19,8 @@ class KekServer(private val port: Int) {
 
     fun addSession(): Int {
         val id = sessions.size
-        val context = levelProducer.create(42)
-        sessions.add(Session(id, context))
+        sessions.add(Session(id))
         return id
-    }
-
-    fun addNewPlayerToSession(id: Int): Int {
-        return sessions[id].addPlayer()
     }
 
     fun start() {

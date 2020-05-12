@@ -1,33 +1,21 @@
 package controller
 
 import data.Context
-import data.GameObject
-import data.Point
 import event.ExitCode
 import event.PlayerEvent
 import logic.GameManager
 import logic.PlayerAction
 import logic.PlayerActions
 import tornadofx.Controller
-import views.LevelView
-import java.io.File
 import java.util.concurrent.LinkedBlockingQueue
-import kotlin.random.Random
 
-class MainController(createdContext: Context? = null) : Controller() {
+class MainController(customGameManager: GameManager? = null) : Controller() {
     private val channel = LinkedBlockingQueue<PlayerAction>()
-    private val gameManager = GameManager()
-    private var context: Context = createdContext ?: Context(0, 0)
-        set(newContext) {
-            newContext.addReaction {
-                //TODO call level update
-                tornadofx.runLater { find<LevelView>().update(it) }
-            }
-            field = newContext
-        }
+    private val gameManager = customGameManager ?: GameManager()
 
-    fun addToActionQueue(button: String, playerId : Int = 0) {
-        val action = when(button) {
+    fun addToActionQueue(button: String, playerId: Int = 0) {
+        val context = getContext()
+        val action = when (button) {
             "UP" -> PlayerActions(context, playerId).moveUp()
             "DOWN" -> PlayerActions(context, playerId).moveDown()
             "LEFT" -> PlayerActions(context, playerId).moveLeft()
@@ -38,36 +26,25 @@ class MainController(createdContext: Context? = null) : Controller() {
     }
 
     fun getContext(): Context {
-        return context
+        return gameManager.context
     }
 
     fun saveContext(saveDir: String) {
-        gameManager.saveGame(context, saveDir)
+        gameManager.saveGame(getContext(), saveDir)
     }
 
     fun stopGame() {
-        channel.add(PlayerActions(context).stopGame())
+        channel.add(PlayerActions(getContext()).stopGame())
     }
 
     fun startGame(path: String? = null) {
-        context = path?.let{ gameManager.createLevel(it)!! } ?: gameManager.createLevel(Random.nextInt())
-
-        run() {
-            //TODO call level update
-            tornadofx.runLater { find<LevelView>().update(it) }
-        }
-    }
-
-    //to replace ui update with sending new state to all players
-    fun run(reaction: (Map<Point, List<GameObject>>) -> Unit) {
-        context.addReaction {
-            reaction(it)
-        }
+        gameManager.generateNewLevel(path)
         runAsync {
             loop@ while (true) {
-                val exitCode = gameManager.runLevel(context, listOf(PlayerEvent(channel)))
+                val exitCode = gameManager.runLevel(listOf(PlayerEvent(channel)))
                 when (exitCode) {
-                    ExitCode.GO_DOWN, ExitCode.GO_UP -> context = gameManager.createLevel(Random.nextInt())
+                    ExitCode.GO_DOWN, ExitCode.GO_UP -> gameManager.generateNewLevel()
+                        ?: println("New level generation failed")
                     ExitCode.EXIT -> break@loop // you died
                     ExitCode.GAME_OVER -> {
                         gameManager.deleteSave()
@@ -77,6 +54,7 @@ class MainController(createdContext: Context? = null) : Controller() {
             }
         }
     }
+
 }
 
 //class ContextModel(ctx: Context) : ItemViewModel<Context>(ctx) {
