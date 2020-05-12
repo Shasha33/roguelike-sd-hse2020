@@ -52,4 +52,9 @@ class Client(host: String, port: Int) {
         val packedContext = stub.updateMap(playerId).serializedMap
         levelLoader.unpackContext(packedContext)
     }
+
+    fun disconnect() = runBlocking {
+        val text = stub.disconnect(playerId)
+        text
+    }
 }
