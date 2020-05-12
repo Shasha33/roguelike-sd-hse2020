@@ -36,7 +36,7 @@ class LevelLoader {
 
     fun saveTo(context: Context, path: String = defaultSavePath) {
         lastSavePath = path
-        val jsonText = json.stringify(Context.serializer(), context)
+        val jsonText = packContext(context)
         val file = File(path)
         if (!file.exists()) {
             file.createNewFile()
@@ -50,6 +50,16 @@ class LevelLoader {
             return null
         }
         val text = file.readText()
+        return unpackContext(text)
+    }
+
+    // for server map update sending
+    fun packContext(context: Context): String {
+        return json.stringify(Context.serializer(), context)
+    }
+
+    // for client map receiving
+    fun unpackContext(text: String): Context {
         return json.parse(Context.serializer(), text)
     }
 
