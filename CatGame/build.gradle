@@ -65,8 +65,16 @@ dependencies {
     implementation 'io.grpc:grpc-netty:1.4.0'
     implementation 'io.grpc:grpc-protobuf:1.4.0'
     implementation 'io.grpc:grpc-stub:1.4.0'
+    implementation "io.grpc:grpc-kotlin-stub:0.1.1"
 }
-
+sourceSets {
+    main {
+        kotlin {
+            srcDirs 'build/generated/source/proto/main/grpckt'
+            srcDirs 'build/generated/source/proto/main/java'
+        }
+    }
+}
 compileKotlin {
     kotlinOptions.jvmTarget = "11"
 }
