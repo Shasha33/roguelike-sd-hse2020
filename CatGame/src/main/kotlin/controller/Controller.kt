@@ -47,12 +47,12 @@ class MainController(customGameManager: GameManager? = null) : Controller() {
         server.close()
     }
 
-    suspend fun connectToServer(host: String, port: Int): List<Roguelike.Session> {
+    suspend fun connectToServer(host: String, port: Int): List<SessionInfo> {
         clientWrapper = ClientWrapper(host, port)
-        return clientWrapper.client.getSessionsList().toList()
+        return clientWrapper.client.getSessionsList().toList().map { SessionInfo(it.id, it.name) }
     }
 
-    fun connectToExistingSession(session: Roguelike.Session) {
+    fun connectToExistingSession(session: SessionInfo) {
         clientWrapper.client.connectToSession(session.id)
         startClientUpdateLoop()
     }
@@ -107,6 +107,12 @@ class MainController(customGameManager: GameManager? = null) : Controller() {
 
     fun connectTo(ip: String, port: String) {
         TODO("Not yet implemented")
+    }
+}
+
+data class SessionInfo(val id: Int, val name: String) {
+    override fun toString(): String {
+        return "$id: $name"
     }
 }
 
