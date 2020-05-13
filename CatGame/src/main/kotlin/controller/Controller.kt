@@ -51,6 +51,16 @@ class MainController(customGameManager: GameManager? = null) : Controller() {
         return clientWrapper.client.getSessionsList().toList().map { it.name }
     }
 
+    fun connectToExistingSession(sessionId: Int) {
+        clientWrapper.client.connectToSession(sessionId)
+        startClientUpdateLoop()
+    }
+
+    fun createNewSessionAndConnect(name: String) {
+        clientWrapper.client.createNewSessionAndConnect(name)
+        startClientUpdateLoop()
+    }
+
     fun startClientUpdateLoop() {
         clientWrapper.startUILoop {
             // update ui
