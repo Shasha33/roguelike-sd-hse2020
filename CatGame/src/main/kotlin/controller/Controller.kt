@@ -68,7 +68,7 @@ class MainController(customGameManager: GameManager? = null) : Controller() {
 
     fun startClientUpdateLoop() {
         clientWrapper.startUILoop {
-            // update ui
+            tornadofx.runLater { find<LevelView>().update(it.getMap()) }
         }
     }
 
