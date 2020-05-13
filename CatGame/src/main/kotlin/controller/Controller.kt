@@ -22,6 +22,12 @@ class MainController(customGameManager: GameManager? = null) : Controller() {
     private lateinit var server : KekServer
 
     fun addToActionQueue(button: String, playerId: Int = 0) {
+        if (this::clientWrapper.isInitialized) {
+            runAsync {
+                clientWrapper.client.makeMove(button)
+            }
+            return
+        }
         val context = getContext()
         val action = when (button) {
             "UP" -> PlayerActions(context, playerId).moveUp()
@@ -68,6 +74,8 @@ class MainController(customGameManager: GameManager? = null) : Controller() {
 
     fun startClientUpdateLoop() {
         clientWrapper.startUILoop {
+            println("update")
+            println(it.getMap())
             tornadofx.runLater { find<LevelView>().update(it.getMap()) }
         }
     }

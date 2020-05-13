@@ -1,9 +1,10 @@
 package data
 
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.Transient
 
 @Serializable
-class Player(val id : Int = 0, private val dieCallback: () -> kotlin.Unit) : Unit {
+class Player(val id : Int = 0, @Transient private val dieCallback: () -> kotlin.Unit = {}) : Unit {
     constructor(id : Int = 0) : this(id, {})
 
     override val stats = Stats(100, 10, 0 )
