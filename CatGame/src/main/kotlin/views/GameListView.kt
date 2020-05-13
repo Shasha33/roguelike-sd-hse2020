@@ -6,6 +6,8 @@ import javafx.geometry.Insets
 import javafx.geometry.Orientation
 import javafx.geometry.Pos
 import javafx.scene.text.Font
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import tornadofx.*
 
 class GameListView : View("Connect to server") {
@@ -14,6 +16,19 @@ class GameListView : View("Connect to server") {
     val gameList = listOf<String>("aaaaaaaaa").asObservable()
     val newRoom = SimpleStringProperty("new game")
     val selectedGameName = SimpleStringProperty()
+
+    var addr = ""
+    var port = 0
+
+    override fun onDock() {
+
+        addr = params["addr"] as String? ?: "localhost"
+        port = (params["port"] as String? ?: "0").toInt()
+        GlobalScope.launch {
+            gameList.addAll(controller.connectToServer(addr, port))
+        }
+
+    }
     override val root = vbox {
         listview(gameList) {
             bindSelected(selectedGameName)

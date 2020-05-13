@@ -26,8 +26,8 @@ class ConnectToServerView : View("Connect to server") {
             }
             button("Connect") {
                 action {
-                    controller.connectTo(ipProp.value, portProp.value)
-                    replaceWith<GameListView>()
+                    enableWhen { ipProp.isNotEmpty.and(portProp.isNotEmpty.and(portProp.value.isInt())) }
+                    replaceWith(find<GameListView>(mapOf("addr" to ipProp.value, "port" to portProp.value)))
                 }
             }
         }
