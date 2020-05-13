@@ -14,7 +14,12 @@ class Session(val id : Int, val name: String) {
     private val levelProducer = LevelProducer()
     val context: Context
         get() = gameController.getContext()
-    private val gameController = MainController()
+    private val manager = NetworkGameManager()
+    private val gameController = MainController(manager)
+
+    init {
+        manager.generateNewLevel()
+    }
 
     fun addPlayer(): Int {
         val index = players.size
