@@ -29,6 +29,9 @@ class Session(val id : Int, val name: String) {
         players.add(player)
         val point = context.getRandomEmptyPoint() ?: return -1
         context.addObject(player, point)
+        if (index == 0) {
+            start()
+        }
         return index
     }
 
