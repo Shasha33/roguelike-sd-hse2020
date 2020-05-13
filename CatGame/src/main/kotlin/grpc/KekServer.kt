@@ -87,13 +87,9 @@ class KekServer(private val port: Int) {
 
         override suspend fun updateMap(request: Roguelike.PlayerId): Roguelike.ContextState {
             try {
-                println("update")
                 val sessionId = request.session.id
-                println("1")
                 val currentContext = sessions[sessionId].context
-                println("2")
                 val packedContext = levelLoader.packContext(currentContext)
-                println("3 $packedContext")
                 return Roguelike.ContextState.newBuilder().setSerializedMap(packedContext).build()
             } catch (e: Exception) {
                 println(e)

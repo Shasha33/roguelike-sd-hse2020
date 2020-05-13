@@ -15,8 +15,8 @@ import java.io.File
 
 class LevelView : View("Level") {
     private val controller: MainController by inject()
-    private val wSize = controller.getContext().width
-    private val hSize = controller.getContext().height
+    private val wSize = 100
+    private val hSize = 30
 
     private val render = LevelRender()
     private val fieldProperty = SimpleStringProperty(this, "field", render.drawContext(wSize, hSize, mapOf()))
