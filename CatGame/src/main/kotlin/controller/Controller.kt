@@ -4,6 +4,7 @@ import data.Context
 import event.ExitCode
 import event.PlayerEvent
 import grpc.KekServer
+import grpc.Session
 import kotlinx.coroutines.flow.toList
 import logic.GameManager
 import logic.PlayerAction
@@ -46,13 +47,13 @@ class MainController(customGameManager: GameManager? = null) : Controller() {
         server.close()
     }
 
-    suspend fun connectToServer(host: String, port: Int): List<String> {
+    suspend fun connectToServer(host: String, port: Int): List<Roguelike.Session> {
         clientWrapper = ClientWrapper(host, port)
-        return clientWrapper.client.getSessionsList().toList().map { it.name }
+        return clientWrapper.client.getSessionsList().toList()
     }
 
-    fun connectToExistingSession(sessionId: Int) {
-        clientWrapper.client.connectToSession(sessionId)
+    fun connectToExistingSession(session: Roguelike.Session) {
+        clientWrapper.client.connectToSession(session.id)
         startClientUpdateLoop()
     }
 
