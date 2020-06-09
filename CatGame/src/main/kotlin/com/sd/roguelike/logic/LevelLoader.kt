@@ -1,7 +1,7 @@
-package logic
+package  com.sd.roguelike.logic
 
 import com.google.gson.GsonBuilder
-import data.*
+import com.sd.roguelike.data.*
 import java.io.File
 
 class LevelLoader {

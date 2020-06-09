@@ -1,13 +1,12 @@
-package logic
+package com.sd.roguelike.logic
 
-import data.Context
-import event.Event
-import event.ExitCode
+import com.sd.roguelike.data.Context
+import com.sd.roguelike.event.Event
+import com.sd.roguelike.event.ExitCode
 
 class GameManager {
     private val levelLoader = LevelLoader()
     private val levelProducer = LevelProducer()
-    private val gameFactory = GameFactory()
 
     fun createLevel(seed: Int): Context {
         return levelProducer.create(seed)

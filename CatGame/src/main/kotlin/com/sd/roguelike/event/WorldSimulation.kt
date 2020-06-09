@@ -1,7 +1,6 @@
-package event
+package com.sd.roguelike.event
 
-import data.*
-import data.Unit
+import com.sd.roguelike.data.*
 
 class WorldSimulation {
     fun addEvents(eventBus: EventBus) {
@@ -40,8 +39,8 @@ class DieEvent : Event {
     override fun apply(context: Context): EventResult {
         context.getMap().forEach {
             for (gameObject in it.value) {
-                if (gameObject is Unit && !gameObject.isAlive()) {
-                    context.removeObject(Unit::class, it.key)
+                if (gameObject is com.sd.roguelike.data.Unit && !gameObject.isAlive()) {
+                    context.removeObject(com.sd.roguelike.data.Unit::class, it.key)
                     if (gameObject is Player) {
                         return EventResult(ExitCode.EXIT, "player is already dead")
                     }

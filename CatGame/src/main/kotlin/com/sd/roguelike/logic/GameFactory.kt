@@ -1,6 +1,6 @@
-package logic
+package  com.sd.roguelike.logic
 
-import data.Context
+import  com.sd.roguelike.data.Context
 
 class GameFactory {
     fun createGame(context: Context): GameLoop {

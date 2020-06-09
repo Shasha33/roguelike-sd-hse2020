@@ -1,8 +1,8 @@
-package data
+package com.sd.roguelike.data
 
-import event.Event
-import event.EventResult
-import event.ExitCode
+import com.sd.roguelike.event.Event
+import com.sd.roguelike.event.EventResult
+import com.sd.roguelike.event.ExitCode
 import kotlin.math.abs
 
 class Enemy(var strategy: EnemyStrategy) : Unit() {
@@ -32,7 +32,8 @@ class ContusedStrategy : EnemyStrategy {
     override fun createTurn(context: Context, unit: Unit): Event {
         return object : Event {
             override fun apply(context: Context): EventResult {
-                val point = context.getPointByObject(unit) ?: return EventResult(ExitCode.EXIT, "No unit found on the map")
+                val point =
+                    context.getPointByObject(unit) ?: return EventResult(ExitCode.EXIT, "No unit found on the map")
                 val (dx, dy) = listOf(1 to 0, 0 to 1, -1 to 0, 0 to -1).random()
                 context.moveObject(unit, point, Point(point.x + dx, point.y + dy))
                 return EventResult(ExitCode.CONTINUE)
@@ -56,10 +57,11 @@ class PassiveAggressiveStrategy : EnemyStrategy {
         return object : Event {
             override fun apply(context: Context): EventResult {
                 val player = context.getPlayerPoint() ?: return EventResult(ExitCode.EXIT, "No player found on the map")
-                val point = context.getPointByObject(unit) ?: return EventResult(ExitCode.EXIT, "No unit found on the map")
+                val point =
+                    context.getPointByObject(unit) ?: return EventResult(ExitCode.EXIT, "No unit found on the map")
                 val possibleMoves = mutableListOf<Point>()
                 if (point.x < player.x) {
-                       possibleMoves.add(Point(point.x - 1, point.y))
+                    possibleMoves.add(Point(point.x - 1, point.y))
                 } else if (point.x > player.x) {
                     possibleMoves.add(Point(point.x + 1, point.y))
                 }
@@ -85,10 +87,12 @@ class AggressiveStrategy : EnemyStrategy {
         return object : Event {
             override fun apply(context: Context): EventResult {
                 val player = context.getPlayerPoint() ?: return EventResult(ExitCode.EXIT, "No player found on the map")
-                val point = context.getPointByObject(unit) ?: return EventResult(ExitCode.EXIT, "No unit found on the map")
+                val point =
+                    context.getPointByObject(unit) ?: return EventResult(ExitCode.EXIT, "No unit found on the map")
 
                 if (abs(player.x - point.x) + abs(player.y - point.y) == 1) {
-                    val playerObject = context.getPlayer() ?: return EventResult(ExitCode.EXIT, "No player found on the map")
+                    val playerObject =
+                        context.getPlayer() ?: return EventResult(ExitCode.EXIT, "No player found on the map")
                     playerObject.damage(unit.damageValue)
                     context.stepsCount++
                     unit.damage(playerObject.damageValue)

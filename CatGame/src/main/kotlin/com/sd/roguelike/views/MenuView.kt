@@ -1,17 +1,14 @@
-package views
+package com.sd.roguelike.views
 
-import controller.MainController
+import com.sd.roguelike.controller.MainController
 import javafx.beans.property.SimpleStringProperty
 import javafx.scene.layout.Priority
-import javafx.scene.paint.Color
-
 import tornadofx.*
 import java.io.File
 
 class MenuView : View("Main menu") {
-
-    val controller: MainController by inject()
-    val input = SimpleStringProperty()
+    private val controller: MainController by inject()
+    private val input = SimpleStringProperty()
 
     override val root = hbox {
         prefHeight = 210.0

@@ -1,9 +1,9 @@
-package logic
+package com.sd.roguelike.logic
 
-import data.Context
-import event.*
+import com.sd.roguelike.data.Context
+import com.sd.roguelike.event.*
 
-class GameLoop(private val context: Context, private val eventList : List<Event>) {
+class GameLoop(private val context: Context, private val eventList: List<Event>) {
     fun run(): ExitCode {
         val worldSimulation = WorldSimulation()
         val eventBus = EventBus()

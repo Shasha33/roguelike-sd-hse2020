@@ -1,6 +1,5 @@
-package data
+package com.sd.roguelike.data
 
-import kotlin.Unit
 import kotlin.math.abs
 import kotlin.properties.Delegates
 import kotlin.reflect.KClass
@@ -13,16 +12,16 @@ data class Point(val x: Int, val y: Int) {
 
 class Context(val height: Int, val width: Int) {
     private val objects = mutableMapOf<Point, MutableList<GameObject>>()
-    private var runnableReaction : (Map<Point, List<GameObject>>) -> Unit = {}
-    var stepsCount : Int by Delegates.observable(0) { _, _, _ ->
+    private var runnableReaction: (Map<Point, List<GameObject>>) -> kotlin.Unit = {}
+    var stepsCount: Int by Delegates.observable(0) { _, _, _ ->
         runnableReaction.invoke(getMap())
     }
 
-    fun getMap() : Map<Point, List<GameObject>> {
+    fun getMap(): Map<Point, List<GameObject>> {
         return HashMap(objects)
     }
 
-    fun addReaction(reaction: (Map<Point, List<GameObject>>) -> Unit) {
+    fun addReaction(reaction: (Map<Point, List<GameObject>>) -> kotlin.Unit) {
         runnableReaction = reaction
         stepsCount++
     }
@@ -34,7 +33,7 @@ class Context(val height: Int, val width: Int) {
 
         val currentObject = (objects[from] ?: return).singleOrNull { it == gameObject } ?: return
         objects[from]?.remove(currentObject)
-        objects.getOrPut(to, { mutableListOf()}).add(currentObject)
+        objects.getOrPut(to, { mutableListOf() }).add(currentObject)
         stepsCount++
     }
 
@@ -67,7 +66,7 @@ class Context(val height: Int, val width: Int) {
 
     fun getPlayerPoint(): Point? {
         return objects.mapNotNull { (p: Point, g: List<GameObject>) ->
-            if (g.any {it is Player}) {
+            if (g.any { it is Player }) {
                 p
             } else {
                 null
@@ -92,13 +91,13 @@ class Context(val height: Int, val width: Int) {
         return containsClass(Wall::class, p)
     }
 
-    private fun isEmpty(p: Point): Boolean{
+    private fun isEmpty(p: Point): Boolean {
         return objects[p]?.isEmpty() ?: true
     }
 
     fun getPointByObject(gameObject: GameObject): Point? {
         return objects.mapNotNull { (p: Point, g: List<GameObject>) ->
-            if (g.any {it == gameObject}) {
+            if (g.any { it == gameObject }) {
                 p
             } else {
                 null
