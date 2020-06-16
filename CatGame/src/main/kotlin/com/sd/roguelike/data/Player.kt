@@ -1,4 +1,4 @@
-package data
+package com.sd.roguelike.data
 
 import com.google.gson.JsonElement
 import com.google.gson.JsonObject
@@ -24,8 +24,8 @@ abstract class Unit : GameObject {
 
     val damageValue: Int
         get() {
-        return if (isAlive()) strength else 0
-    }
+            return if (isAlive()) strength else 0
+        }
 
     fun damage(value: Int) {
         hp -= value

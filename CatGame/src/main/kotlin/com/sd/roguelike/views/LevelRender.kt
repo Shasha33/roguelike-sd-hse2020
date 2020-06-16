@@ -1,13 +1,12 @@
-package views
+package com.sd.roguelike.views
 
-import data.*
+import com.sd.roguelike.data.*
 
 class LevelRender {
-
     fun drawContext(width: Int, height: Int, ctx: Map<Point, List<GameObject>>): String {
         val builder = LevelBuilder(width, height)
         for ((point, list) in ctx.entries) {
-            if (!list.isEmpty()) {
+            if (list.isNotEmpty()) {
                 val obj = list.first()
                 val sprite = loadSprite(obj)
                 builder.drawOn(point.x, point.y, sprite)
@@ -50,7 +49,7 @@ class LevelBuilder(val w: Int, val h: Int) {
             return false
         }
         lines[y][x] = sprite
-            return true
+        return true
     }
 
     override fun toString(): String {
@@ -62,7 +61,7 @@ class LevelBuilder(val w: Int, val h: Int) {
                 append("\n")
             }
 
-            append(" ".repeat(w/2) + "HP: $hp")
+            append(" ".repeat(w / 2) + "HP: $hp")
         }
     }
 }

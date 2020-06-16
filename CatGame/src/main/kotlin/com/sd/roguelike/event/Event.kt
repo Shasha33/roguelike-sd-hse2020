@@ -1,6 +1,6 @@
-package event
+package  com.sd.roguelike.event
 
-import data.*
+import com.sd.roguelike.data.*
 import java.util.concurrent.LinkedBlockingQueue
 import java.util.concurrent.TimeUnit
 import kotlin.random.Random
@@ -20,7 +20,7 @@ class PlayerEvent(private val queue: LinkedBlockingQueue<String>) : Event {
         }
         val player = context.getPlayer() ?: return EventResult(ExitCode.EXIT)
         val playerPoint = context.getPlayerPoint() ?: return EventResult(ExitCode.EXIT)
-        val newPoint = when(element) {
+        val newPoint = when (element) {
             "UP" -> Point(playerPoint.x, playerPoint.y - 1)
             "DOWN" -> Point(playerPoint.x, playerPoint.y + 1)
             "LEFT" -> Point(playerPoint.x - 1, playerPoint.y)

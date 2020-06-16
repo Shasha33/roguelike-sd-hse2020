@@ -1,16 +1,16 @@
-package logic
+package com.sd.roguelike.logic
 
-import data.AggressiveStrategy
-import data.Context
-import data.Enemy
-import data.PassiveStrategy
-import event.Event
+import com.sd.roguelike.data.AggressiveStrategy
+import com.sd.roguelike.data.Context
+import com.sd.roguelike.data.Enemy
+import com.sd.roguelike.data.PassiveStrategy
+import com.sd.roguelike.event.Event
 
 class AI {
     private val distance = 10
 
     fun aiAction(context: Context): List<Event> {
-        val enemies = context.getMap().filter { it.value.any { gameObject ->  gameObject is Enemy} }
+        val enemies = context.getMap().filter { it.value.any { gameObject -> gameObject is Enemy } }
         val player = context.getPlayerPoint()
         for (enemy in enemies) {
             val point = enemy.key
