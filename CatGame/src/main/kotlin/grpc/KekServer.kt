@@ -7,7 +7,6 @@ import kotlinx.coroutines.flow.asFlow
 import logic.LevelLoader
 import ru.hse.kek.KekGrpcKt
 import ru.hse.kek.Roguelike
-import java.lang.Exception
 
 class KekServer(private val port: Int) {
     private val sessions = mutableListOf<Session>()
@@ -76,24 +75,24 @@ class KekServer(private val port: Int) {
             }.build() }.asFlow()
         }
 
-        override suspend fun makeTurn(request: Roguelike.PlayerTurn): Roguelike.ContextState {
+        override suspend fun makeTurn(request: Roguelike.PlayerTurn): Roguelike.Empty {
             val sessionId = request.player.session.id
             val playerId = request.player.number
             val button = request.button
 
             sessions[sessionId].addPlayerMove(playerId, button)
-            return updateMap(request.player)
+            return Roguelike.Empty.getDefaultInstance()
         }
 
         override suspend fun updateMap(request: Roguelike.PlayerId): Roguelike.ContextState {
-            try {
+            return try {
                 val sessionId = request.session.id
                 val currentContext = sessions[sessionId].context
                 val packedContext = levelLoader.packContext(currentContext)
-                return Roguelike.ContextState.newBuilder().setSerializedMap(packedContext).build()
+                Roguelike.ContextState.newBuilder().setSerializedMap(packedContext).build()
             } catch (e: Exception) {
-                println(e)
-                return Roguelike.ContextState.newBuilder().setSerializedMap("{}").build()
+                e.printStackTrace()
+                Roguelike.ContextState.newBuilder().setSerializedMap("{}").build()
             }
         }
     }

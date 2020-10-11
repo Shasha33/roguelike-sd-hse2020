@@ -6,11 +6,13 @@ package ru.hse.kek;
 service Kek {
   rpc SessionsList(NyanMessage) returns (stream Session);
   rpc AddToSession(Session) returns (PlayerId);
-  rpc MakeTurn(PlayerTurn) returns (ContextState);
+  rpc MakeTurn(PlayerTurn) returns (Empty);
   rpc UpdateMap(PlayerId) returns (ContextState);
   rpc Disconnect(PlayerId) returns (NyanMessage);
   rpc CreateSession(SessionInitInfo) returns (Session);
 }
+
+message Empty {}
 
 message NyanMessage {
   string text = 1;

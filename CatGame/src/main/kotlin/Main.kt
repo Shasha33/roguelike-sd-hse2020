@@ -7,8 +7,8 @@ import views.ChooseMode
 class MyApp: App(ChooseMode::class) {
     override fun start(stage: Stage) {
         super.start(stage)
-        stage.width = 500.0
-        stage.height = 200.0
+        stage.width = 600.0
+        stage.height = 300.0
     }
     private val controller: MainController by inject()
 

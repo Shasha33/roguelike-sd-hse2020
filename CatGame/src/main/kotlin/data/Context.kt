@@ -22,7 +22,7 @@ data class Point(val x: Int, val y: Int) {
 
 @Serializable
 class Context(val height: Int, val width: Int) {
-    private val objects = mutableMapOf<Point, MutableList<GameObject>>()
+    private val objects: MutableMap<Point, MutableList<GameObject>> = ConcurrentHashMap()
     @Transient
     private var runnableReaction : (Map<Point, List<GameObject>>) -> Unit = {}
     var stepsCount : Int by Delegates.observable(0) { _, _, _ ->
