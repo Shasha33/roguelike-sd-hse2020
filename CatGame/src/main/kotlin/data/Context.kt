@@ -2,6 +2,7 @@ package data
 
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
+import java.util.concurrent.ConcurrentHashMap
 import kotlin.Unit
 import kotlin.math.abs
 import kotlin.properties.Delegates
@@ -62,8 +63,8 @@ class Context(val height: Int, val width: Int) {
 
     fun getRandomEmptyPoint(): Point? {
         val emptyPoints = mutableListOf<Point>()
-        for (x in (0 until height)) {
-            for (y in (0 until width)) {
+        for (y in (0 until height)) {
+            for (x in (0 until width)) {
                 val point = Point(x, y)
                 if (isEmpty(point)) {
                     emptyPoints.add(Point(x, y))
