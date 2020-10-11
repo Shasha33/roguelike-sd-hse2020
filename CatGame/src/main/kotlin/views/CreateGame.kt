@@ -8,15 +8,12 @@ import javafx.scene.paint.Color
 import tornadofx.*
 import java.io.File
 
-class MenuView : View("Main menu") {
+class CreateGame : View("Create game") {
 
     val controller: MainController by inject()
     val input = SimpleStringProperty()
 
     override val root = hbox {
-        prefHeight = 210.0
-        prefWidth = 510.0
-
         button("Random") {
             hgrow = Priority.ALWAYS
             useMaxSize = true

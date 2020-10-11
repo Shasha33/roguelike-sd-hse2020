@@ -1,0 +1,44 @@
+syntax = "proto3";
+
+package ru.hse.kek;
+
+// TODO: better name
+service Kek {
+  rpc SessionsList(NyanMessage) returns (stream Session);
+  rpc AddToSession(Session) returns (PlayerId);
+  rpc MakeTurn(PlayerTurn) returns (Empty);
+  rpc UpdateMap(PlayerId) returns (ContextState);
+  rpc Disconnect(PlayerId) returns (NyanMessage);
+  rpc CreateSession(SessionInitInfo) returns (Session);
+}
+
+message Empty {}
+
+message NyanMessage {
+  string text = 1;
+}
+
+message Session {
+  int32 id = 1;
+  string name = 2;
+}
+
+message PlayerId {
+  int32 number = 1;
+  Session session = 2;
+}
+
+message PlayerTurn {
+  PlayerId player = 1;
+  string button = 2;
+}
+
+message ContextState {
+  string serializedMap = 1;
+}
+
+message SessionInitInfo {
+  bool isRandom = 1;
+  string path = 2;
+  string name = 3;
+}
